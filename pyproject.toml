@@ -1,0 +1,23 @@
+[project]
+name = "e-commerce-analytics-platform-using-medallion-architecture"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dbt-core>=1.11.7",
+    "dbt-extractor>=0.6.0",
+    "dbt-snowflake>=1.11.3",
+    "jupyterlab>=4.5.6",
+    "matplotlib>=3.10.8",
+    "notebook>=7.5.5",
+    "numpy>=2.4.4",
+    "pandas>=2.1.2,<3.0.0",
+    "prefect>=3.6.25",
+    "psycopg2-binary>=2.9.11",
+    "python-dotenv>=1.2.2",
+    "seaborn>=0.13.2",
+    "snowflake-connector-python[pandas]>=4.4.0",
+    "sqlfluff>=4.1.0",
+    "supabase>=2.28.3",
+]
