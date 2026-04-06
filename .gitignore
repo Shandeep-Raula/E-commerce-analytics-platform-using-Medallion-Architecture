@@ -87,3 +87,7 @@ coverage.xml
 # Temporary files
 *.tmp
 *.bak
+
+*.vscode
+
+*..ipynb_checkpoints
