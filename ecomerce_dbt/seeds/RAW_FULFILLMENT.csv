@@ -1,0 +1,4 @@
+fulfillment_id,shipping_method,service_level,delivery_sla_days,base_shipping_cost
+FUL001,Standard,Economy,5,46.27
+FUL002,Express,Priority,2,86.64
+FUL003,Same Day,Premium,1,215.79

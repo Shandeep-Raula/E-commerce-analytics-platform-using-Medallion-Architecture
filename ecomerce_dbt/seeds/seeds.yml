@@ -1,0 +1,50 @@
+version: 2
+
+seeds:
+  - name: RAW_FULFILLMENT
+    description: "RAW seed table containing fulfillment data as ingested from source systems."
+    config:
+      schema: BRONZE
+      quote_columns: false
+    columns:
+      - name: FULFILLMENT_ID
+        description: "Unique identifier for fulfillment"
+        tests:
+          - not_null
+          - unique
+
+  - name: RAW_LOCATION
+    description: "RAW seed table containing location data such as city, state, and country."
+    config:
+      schema: BRONZE
+      quote_columns: false
+    columns:
+      - name: LOCATION_ID
+        description: "Unique identifier for location"
+        tests:
+          - not_null
+          - unique
+
+  - name: RAW_PAYMENT
+    description: "RAW seed table containing payment method details."
+    config:
+      schema: BRONZE
+      quote_columns: false
+    columns:
+      - name: PAYMENT_ID
+        description: "Unique identifier for payment method"
+        tests:
+          - not_null
+          - unique
+
+  - name: RAW_CHANNEL
+    description: "RAW seed table containing channel data such as web, mobile, or store."
+    config:
+      schema: BRONZE
+      quote_columns: false
+    columns:
+      - name: CHANNEL_ID
+        description: "Unique identifier for channel"
+        tests:
+          - not_null
+          - unique

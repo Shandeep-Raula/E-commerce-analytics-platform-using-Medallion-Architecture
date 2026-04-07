@@ -1,0 +1,11 @@
+channel_id,channel_name,channel_type,description
+CHN001,Organic,Digital,Organic website traffic
+CHN002,Paid Ads,Digital,Paid advertising campaigns
+CHN003,Email,Digital,Email marketing campaigns
+CHN004,Social,Digital,Social media platforms
+CHN005,Referral,Digital,Referral traffic from other sites
+CHN006,Affiliate,Digital,Affiliate partner traffic
+CHN007,App,Digital,Mobile app traffic
+CHN008,Marketplaces,Digital,Traffic from marketplaces
+CHN009,Offline,Offline,Offline sales and kiosks
+CHN010,SMS,Digital,SMS marketing campaigns

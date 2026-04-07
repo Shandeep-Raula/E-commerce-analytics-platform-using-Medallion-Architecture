@@ -1,0 +1,114 @@
+location_id,state,city,postal_code,region,latitude,longitude,area_type,location_category
+LOC0001,Maharashtra,Mumbai,364018,West,20.294332,72.555141,Urban,Tier-1
+LOC0002,Maharashtra,Pune,771469,West,35.757534,90.08951,Urban,Tier-1
+LOC0003,Maharashtra,Nagpur,918934,West,21.867898,96.75388,Urban,Tier-2
+LOC0004,Maharashtra,Nashik,205901,West,18.932058,71.357835,Semi-Urban,Tier-3
+LOC0005,Maharashtra,Aurangabad,548304,West,20.382046,79.825861,Urban,Tier-2
+LOC0006,Maharashtra,Thane,712801,West,13.343862,95.383857,Semi-Urban,Tier-3
+LOC0007,Maharashtra,Kolhapur,609596,West,19.042691,74.245301,Semi-Urban,Tier-3
+LOC0008,Maharashtra,Solapur,878533,West,36.61268,84.789821,Semi-Urban,Tier-3
+LOC0009,Maharashtra,Amravati,780004,West,17.226433,78.368188,Semi-Urban,Tier-3
+LOC0010,Karnataka,Bengaluru,843810,South,28.180254,81.284503,Urban,Tier-1
+LOC0011,Karnataka,Mysuru,892541,South,35.760954,71.507323,Semi-Urban,Tier-3
+LOC0012,Karnataka,Mangaluru,898009,South,19.863655,76.246635,Semi-Urban,Tier-3
+LOC0013,Karnataka,Hubballi,578900,South,20.682688,80.54473,Semi-Urban,Tier-3
+LOC0014,Karnataka,Belagavi,666538,South,25.63822,91.204107,Semi-Urban,Tier-3
+LOC0015,Karnataka,Shivamogga,759762,South,16.243871,81.526247,Semi-Urban,Tier-3
+LOC0016,Karnataka,Tumakuru,683066,South,19.792218,92.662042,Semi-Urban,Tier-3
+LOC0017,Tamil Nadu,Chennai,167792,South,18.187486,94.53332,Urban,Tier-1
+LOC0018,Tamil Nadu,Coimbatore,462993,South,34.661759,95.660613,Urban,Tier-2
+LOC0019,Tamil Nadu,Madurai,886415,South,35.650558,68.728025,Urban,Tier-2
+LOC0020,Tamil Nadu,Salem,142738,South,33.60061,75.455452,Semi-Urban,Tier-3
+LOC0021,Tamil Nadu,Tiruchirappalli,258689,South,20.402553,72.683612,Semi-Urban,Tier-3
+LOC0022,Tamil Nadu,Tirunelveli,250599,South,15.349698,89.369805,Semi-Urban,Tier-3
+LOC0023,Tamil Nadu,Vellore,379158,South,12.268891,79.785202,Semi-Urban,Tier-3
+LOC0024,Uttar Pradesh,Lucknow,835262,North,10.314874,73.527374,Urban,Tier-2
+LOC0025,Uttar Pradesh,Kanpur,461386,North,18.113839,75.081435,Urban,Tier-2
+LOC0026,Uttar Pradesh,Varanasi,113106,North,35.062367,73.335249,Urban,Tier-2
+LOC0027,Uttar Pradesh,Agra,697363,North,29.779398,88.596481,Urban,Tier-2
+LOC0028,Uttar Pradesh,Prayagraj,232848,North,22.85678,71.763648,Semi-Urban,Tier-3
+LOC0029,Uttar Pradesh,Ghaziabad,574275,North,8.363693,75.347949,Semi-Urban,Tier-3
+LOC0030,Uttar Pradesh,Noida,522344,North,30.365537,87.77081,Semi-Urban,Tier-3
+LOC0031,Uttar Pradesh,Meerut,275543,North,36.021471,70.956296,Semi-Urban,Tier-3
+LOC0032,West Bengal,Kolkata,698626,East,32.041012,94.826578,Urban,Tier-1
+LOC0033,West Bengal,Siliguri,234497,East,12.376547,92.247725,Semi-Urban,Tier-3
+LOC0034,West Bengal,Durgapur,464466,East,30.159247,81.362531,Semi-Urban,Tier-3
+LOC0035,West Bengal,Howrah,251697,East,15.903393,84.041078,Semi-Urban,Tier-3
+LOC0036,West Bengal,Asansol,175435,East,14.436021,91.336977,Semi-Urban,Tier-3
+LOC0037,West Bengal,Haldia,274443,East,10.797744,82.09289,Semi-Urban,Tier-3
+LOC0038,West Bengal,Kharagpur,705775,East,30.623518,75.246045,Semi-Urban,Tier-3
+LOC0039,Gujarat,Ahmedabad,363186,West,18.656159,90.341923,Urban,Tier-1
+LOC0040,Gujarat,Surat,254904,West,32.125774,68.11479,Urban,Tier-2
+LOC0041,Gujarat,Vadodara,199403,West,20.599376,96.732224,Urban,Tier-2
+LOC0042,Gujarat,Rajkot,989497,West,29.46838,90.411415,Urban,Tier-2
+LOC0043,Gujarat,Gandhinagar,240540,West,36.317882,86.553047,Semi-Urban,Tier-3
+LOC0044,Gujarat,Bhavnagar,273826,West,10.349578,82.209134,Semi-Urban,Tier-3
+LOC0045,Gujarat,Junagadh,746556,West,23.744154,71.18451,Semi-Urban,Tier-3
+LOC0046,Rajasthan,Jaipur,666317,North,18.665837,96.293265,Urban,Tier-2
+LOC0047,Rajasthan,Jodhpur,576034,North,11.397722,73.620842,Urban,Tier-2
+LOC0048,Rajasthan,Udaipur,851514,North,18.190629,82.812443,Semi-Urban,Tier-3
+LOC0049,Rajasthan,Kota,602283,North,31.262791,70.133315,Semi-Urban,Tier-3
+LOC0050,Rajasthan,Bikaner,799654,North,15.208179,92.979053,Semi-Urban,Tier-3
+LOC0051,Rajasthan,Ajmer,332347,North,35.982405,70.500656,Semi-Urban,Tier-3
+LOC0052,Rajasthan,Alwar,648856,North,24.324713,86.325797,Semi-Urban,Tier-3
+LOC0053,Madhya Pradesh,Bhopal,406047,Central,35.497063,72.654328,Urban,Tier-2
+LOC0054,Madhya Pradesh,Indore,760168,Central,11.031856,70.759766,Urban,Tier-2
+LOC0055,Madhya Pradesh,Gwalior,963696,Central,8.692408,90.049016,Semi-Urban,Tier-3
+LOC0056,Madhya Pradesh,Jabalpur,909878,Central,32.956654,79.136926,Semi-Urban,Tier-3
+LOC0057,Madhya Pradesh,Ujjain,407295,Central,35.39117,74.15615,Semi-Urban,Tier-3
+LOC0058,Madhya Pradesh,Sagar,518121,Central,8.57161,89.385011,Semi-Urban,Tier-3
+LOC0059,Madhya Pradesh,Rewa,661016,Central,36.631323,89.613066,Semi-Urban,Tier-3
+LOC0060,Kerala,Thiruvananthapuram,219885,South,8.529305,72.739525,Urban,Tier-2
+LOC0061,Kerala,Kochi,817475,South,21.653083,77.855672,Urban,Tier-2
+LOC0062,Kerala,Kozhikode,986186,South,16.594143,79.659457,Urban,Tier-2
+LOC0063,Kerala,Thrissur,388498,South,34.434166,77.518443,Semi-Urban,Tier-3
+LOC0064,Kerala,Alappuzha,365084,South,21.827462,81.120069,Semi-Urban,Tier-3
+LOC0065,Kerala,Palakkad,533379,South,22.49128,80.25995,Semi-Urban,Tier-3
+LOC0066,Kerala,Kannur,831343,South,25.804374,84.621735,Semi-Urban,Tier-3
+LOC0067,Telangana,Hyderabad,221737,South,29.955213,78.954834,Urban,Tier-1
+LOC0068,Telangana,Warangal,501996,South,31.777786,95.930731,Semi-Urban,Tier-3
+LOC0069,Telangana,Nizamabad,511174,South,27.448567,79.41958,Semi-Urban,Tier-3
+LOC0070,Telangana,Karimnagar,185197,South,13.930205,78.815195,Semi-Urban,Tier-3
+LOC0071,Telangana,Khammam,250404,South,15.266563,73.222502,Semi-Urban,Tier-3
+LOC0072,Telangana,Mahbubnagar,908436,South,27.294332,95.659553,Semi-Urban,Tier-3
+LOC0073,Bihar,Patna,152417,East,21.761618,88.031692,Urban,Tier-2
+LOC0074,Bihar,Gaya,577366,East,35.722304,74.068178,Semi-Urban,Tier-3
+LOC0075,Bihar,Bhagalpur,983411,East,19.956371,96.098797,Semi-Urban,Tier-3
+LOC0076,Bihar,Muzaffarpur,547340,East,36.57839,84.836688,Semi-Urban,Tier-3
+LOC0077,Bihar,Purnia,123138,East,31.214572,69.65655,Semi-Urban,Tier-3
+LOC0078,Bihar,Darbhanga,610313,East,14.897114,77.967276,Semi-Urban,Tier-3
+LOC0079,Bihar,Arrah,697323,East,19.801539,75.728885,Semi-Urban,Tier-3
+LOC0080,Assam,Guwahati,686660,East,17.956972,81.421774,Urban,Tier-2
+LOC0081,Assam,Dibrugarh,373706,East,31.536846,96.406285,Semi-Urban,Tier-3
+LOC0082,Assam,Jorhat,711844,East,10.213663,92.896214,Semi-Urban,Tier-3
+LOC0083,Assam,Silchar,912127,East,10.622355,80.035653,Semi-Urban,Tier-3
+LOC0084,Assam,Tezpur,364661,East,16.442026,91.919055,Semi-Urban,Tier-3
+LOC0085,Assam,Nagaon,790145,East,31.658707,90.383025,Semi-Urban,Tier-3
+LOC0086,Assam,Tinsukia,920825,East,33.033251,94.680315,Semi-Urban,Tier-3
+LOC0087,Punjab,Ludhiana,546833,North,11.409692,88.182617,Semi-Urban,Tier-3
+LOC0088,Punjab,Amritsar,486711,North,30.316387,80.162585,Semi-Urban,Tier-3
+LOC0089,Punjab,Jalandhar,417079,North,25.286637,73.937818,Semi-Urban,Tier-3
+LOC0090,Punjab,Patiala,183778,North,28.651224,94.433582,Semi-Urban,Tier-3
+LOC0091,Punjab,Mohali,818870,North,27.626976,69.407577,Semi-Urban,Tier-3
+LOC0092,Punjab,Bathinda,272724,North,13.149433,81.263689,Semi-Urban,Tier-3
+LOC0093,Punjab,Hoshiarpur,299286,North,22.923948,74.02682,Semi-Urban,Tier-3
+LOC0094,Delhi,New Delhi,959140,North,35.797729,74.512137,Urban,Tier-1
+LOC0095,Delhi,Dwarka,246344,North,25.275521,85.038029,Semi-Urban,Tier-3
+LOC0096,Delhi,Rohini,230102,North,16.631311,87.096169,Semi-Urban,Tier-3
+LOC0097,Delhi,Saket,117496,North,21.543682,84.575608,Semi-Urban,Tier-3
+LOC0098,Goa,Panaji,514891,South,18.758176,71.99117,Semi-Urban,Tier-3
+LOC0099,Goa,Margao,145010,South,27.466464,69.138819,Semi-Urban,Tier-3
+LOC0100,Goa,Vasco da Gama,125089,South,34.13778,87.003005,Semi-Urban,Tier-3
+LOC0101,Goa,Mapusa,380557,South,32.225768,85.789724,Semi-Urban,Tier-3
+LOC0102,Odisha,Bhubaneswar,385322,East,26.2276,89.859603,Urban,Tier-2
+LOC0103,Odisha,Cuttack,856574,East,31.438804,75.74185,Urban,Tier-2
+LOC0104,Odisha,Rourkela,371809,East,33.281491,93.707973,Urban,Tier-2
+LOC0105,Odisha,Berhampur,668047,East,9.645821,93.008847,Semi-Urban,Tier-3
+LOC0106,Odisha,Sambalpur,404416,East,11.666056,83.212046,Semi-Urban,Tier-3
+LOC0107,Odisha,Balasore,850416,East,11.423354,84.663619,Semi-Urban,Tier-3
+LOC0108,Haryana,Gurgaon,533732,North,9.164922,78.563331,Semi-Urban,Tier-3
+LOC0109,Haryana,Faridabad,744789,North,33.810392,94.318552,Semi-Urban,Tier-3
+LOC0110,Haryana,Panipat,344616,North,30.929508,79.458826,Semi-Urban,Tier-3
+LOC0111,Haryana,Hisar,158165,North,32.848008,84.484934,Semi-Urban,Tier-3
+LOC0112,Haryana,Karnal,243696,North,26.118225,96.914646,Semi-Urban,Tier-3
+LOC0113,Haryana,Rohtak,755367,North,8.315545,79.146265,Semi-Urban,Tier-3

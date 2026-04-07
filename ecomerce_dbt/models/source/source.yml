@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: landing
+    description: "Raw landing layer containing unprocessed e-commerce data ingested from source systems"
+    database: ECOMMERCE
+    schema: LANDING
+
+    tables:
+      - name: RAW_CUSTOMERS
+        description: "Contains raw customer data including personal details, registration info, and segmentation"
+
+      - name: RAW_DELIVERY_PERSONS
+        description: "Stores delivery personnel information such as contact details, ratings, and assigned city"
+
+      - name: RAW_PRODUCTS
+        description: "Raw product catalog including product names, categories, pricing"
+
+      - name: RAW_SELLERS
+        description: "Seller information including seller profiles, ratings, and business-related attributes"
+
+      - name: RAW_SESSIONS
+        description: "Tracks user session activity including login timestamps, session duration, and user interactions"
