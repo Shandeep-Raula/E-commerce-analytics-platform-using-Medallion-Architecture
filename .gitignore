@@ -13,7 +13,7 @@ ENV/
 .env
 .env.*
 *.env
-
+.vscode/
 # Distribution / packaging
 .Python
 build/

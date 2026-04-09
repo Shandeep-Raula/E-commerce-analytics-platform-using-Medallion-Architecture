@@ -30,11 +30,21 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  staging:
-    +database: ECOMMERCE
-    +schema: BRONZE
-    +materialized: tables
+  ecomerce_dbt:
+    staging:
+      +database: ECOMMERCE
+      +schema: BRONZE
+      +materialized: table
+      +tags: ['staging']
+
+    intermediate:
+      +database: ECOMMERCE
+      +schema: SILVER
+      +materialized: table
+      +tags: ['intermediate']  
+
 
 seeds:
+  ecomerce_dbt:
     +database: ECOMMERCE
     +schema: BRONZE

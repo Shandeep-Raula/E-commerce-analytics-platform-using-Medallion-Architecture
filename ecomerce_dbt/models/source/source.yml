@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: landing
+  - name: ECOMMERCE_LANDING
     description: "Raw landing layer containing unprocessed e-commerce data ingested from source systems"
     database: ECOMMERCE
     schema: LANDING
