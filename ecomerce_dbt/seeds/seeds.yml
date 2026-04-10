@@ -4,7 +4,7 @@ seeds:
   - name: RAW_FULFILLMENT
     description: "RAW seed table containing fulfillment data as ingested from source systems."
     config:
-      schema: BRONZE
+      schema: LANDING
       quote_columns: false
     columns:
       - name: FULFILLMENT_ID
@@ -16,7 +16,7 @@ seeds:
   - name: RAW_LOCATION
     description: "RAW seed table containing location data such as city, state, and country."
     config:
-      schema: BRONZE
+      schema: LANDING
       quote_columns: false
     columns:
       - name: LOCATION_ID
@@ -28,7 +28,7 @@ seeds:
   - name: RAW_PAYMENT
     description: "RAW seed table containing payment method details."
     config:
-      schema: BRONZE
+      schema: LANDING
       quote_columns: false
     columns:
       - name: PAYMENT_ID
@@ -40,7 +40,7 @@ seeds:
   - name: RAW_CHANNEL
     description: "RAW seed table containing channel data such as web, mobile, or store."
     config:
-      schema: BRONZE
+      schema: LANDING
       quote_columns: false
     columns:
       - name: CHANNEL_ID

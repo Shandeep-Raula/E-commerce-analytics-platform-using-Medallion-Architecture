@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: INT_CHANNEL
+    description: "Standardized marketing channel data with normalized names and types for analytics usage"
+
+    columns:
+
+      - name: channel_id
+        description: "Unique identifier for each marketing channel"
+        tests:
+          - not_null
+          - unique
+
+      - name: channel_name
+        description: "Name of the channel (e.g., Organic, Paid Ads, Email, Social)"
+        tests:
+          - not_null
+
+      - name: channel_type
+        description: "Type of channel (Digital or Offline)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['DIGITAL', 'OFFLINE']
+
+      - name: description
+        description: "Detailed explanation of the channel and its purpose"

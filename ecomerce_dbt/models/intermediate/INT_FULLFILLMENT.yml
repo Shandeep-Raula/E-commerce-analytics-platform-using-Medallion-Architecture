@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: INT_FULLFILLMENT
+    description: "Cleaned and standardized fulfillment data including shipping methods and service levels"
+
+    columns:
+
+      - name: fulfillment_id
+        description: "Unique identifier for each fulfillment record"
+        tests:
+          - not_null
+          - unique
+
+      - name: shipping_method
+        description: "Shipping method (standard, express, same day)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['STANDARD', 'EXPRESS', 'SAME DAY']
+
+      - name: service_level
+        description: "Service level classification"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['ECONOMY', 'PRIORITY', 'PREMIUM']
+
+      - name: delivery_sla_days
+        description: "Number of days promised for delivery"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 1
+              max_value: 5
+
+      - name: base_shipping_cost
+        description: "Base cost of shipping"
+        tests:
+          - not_null

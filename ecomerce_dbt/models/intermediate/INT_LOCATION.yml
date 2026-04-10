@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: INT_LOCATION
+    description: "Cleaned and standardized location data with normalized geographic and categorical attributes"
+
+    columns:
+
+      - name: location_id
+        description: "Unique identifier for each location"
+        tests:
+          - not_null
+          - unique
+
+      - name: city
+        description: "City name standardized using UUPER"
+        tests:
+          - not_null
+
+      - name: state
+        description: "State name standardized using UUPER"
+        tests:
+          - not_null
+
+      - name: region
+        description: "Region name standardized using UUPER"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['NORTH', 'SOUTH', 'EAST', 'WEST', 'CENTRAL']
+
+      - name: location_category
+        description: "Normalized category of location"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['TIER-1', 'TIER-2', 'TIER-3']
+
+      - name: area_type
+        description: "Type of area (urban/semi-urban), normalized to UUPER"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['URBAN', 'SEMI-URBAN']
+
+      - name: postal_code
+        description: "Postal code of the location"
+
+      - name: latitude
+        description: "Geographical latitude coordinate"
+
+      - name: longitude
+        description: "Geographical longitude coordinate"

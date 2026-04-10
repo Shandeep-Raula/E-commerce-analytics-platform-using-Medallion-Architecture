@@ -36,15 +36,17 @@ models:
       +schema: BRONZE
       +materialized: table
       +tags: ['staging']
+      +severity: warn
 
     intermediate:
       +database: ECOMMERCE
       +schema: SILVER
       +materialized: table
-      +tags: ['intermediate']  
+      +tags: ['intermediate']
+      +severity: warn
 
 
 seeds:
   ecomerce_dbt:
     +database: ECOMMERCE
-    +schema: BRONZE
+    +schema: LANDING

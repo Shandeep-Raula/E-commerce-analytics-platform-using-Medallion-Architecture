@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: INT_PAYMENT
+    description: "Cleaned and standardized payment data including payment methods and providers"
+
+    columns:
+
+      - name: payment_id
+        description: "Unique identifier for each payment transaction"
+        tests:
+          - not_null
+          - unique
+
+      - name: payment_method
+        description: "Payment method used (e.g., credit card, debit card, UPI, net banking)"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['CREDIT CARD', 'DEBIT CARD', 'UPI', 'WALLET', 'CASH ON DELIVERY']
+
+      - name: payment_provider
+        description: "Payment provider or gateway"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['VISA', 'MASTERCARD', 'RUPAY', 'PHONEPE', 'GOOGLE PAY', 'PAYTM', 'AMAZON PAY', 'COD']
+
+      - name: description
+        description: "Description of the payment method or transaction"

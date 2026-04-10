@@ -1,2 +1,2 @@
 SELECT *
-FROM {{ source('ECOMMERCE_LANDING', 'RAW_DELIVERY_PERSONS') }}
+FROM {{ source('ecommerce_landing', 'raw_delivery_persons') }}
