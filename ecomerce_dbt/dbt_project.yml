@@ -36,7 +36,6 @@ models:
       +schema: BRONZE
       +materialized: table
       +tags: ['staging']
-      +severity: warn
 
     intermediate:
       +database: ECOMMERCE
@@ -45,6 +44,12 @@ models:
       +tags: ['intermediate']
       +severity: warn
 
+    mart:
+      +database: ECOMMERCE
+      +schema: GOLD
+      +materialized: table
+      +tags: ['mart']
+      +severity: warn
 
 seeds:
   ecomerce_dbt:

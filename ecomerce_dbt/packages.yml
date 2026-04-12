@@ -5,8 +5,5 @@ packages:
   - package: dbt-labs/codegen
     version: 0.14.0
 
-  - package: metaplane/dbt_expectations
-    version: 0.10.4
-
-  - package: calogica/dbt_date
-    version: 0.10.1
+  - package: godatadriven/dbt_date
+    version: [">=0.10.0", "<1.0.0"]

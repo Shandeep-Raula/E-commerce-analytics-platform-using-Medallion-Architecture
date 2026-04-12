@@ -1,0 +1,16 @@
+version: 2
+
+macros:
+  - name: age_category
+    description: Categorizes age into groups (Under 18, 18-25, 26-35, 36-50, 51-65, 65+)
+    arguments:
+      - name: age_column
+        type: column_name
+        description: The age column to categorize
+
+  - name: calculate_age
+    description: Calculates age in years from a date of birth column
+    arguments:
+      - name: date_column
+        type: column_name
+        description: The date column (typically date of birth) to calculate age from

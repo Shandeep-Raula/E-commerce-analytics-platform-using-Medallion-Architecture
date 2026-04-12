@@ -1,0 +1,84 @@
+version: 2
+
+snapshots:
+  - name: int_customers_snapshot
+    description: >
+      Snapshot table capturing SCD Type 2 history of customers.
+      Tracks changes in customer attributes over time using timestamp strategy.
+
+    config:
+      tags: ['snapshot', 'customers']
+
+    columns:
+
+      - name: CUSTOMER_ID
+        description: Unique identifier for each customer
+        tests:
+          - not_null
+          - unique
+
+      - name: FULL_NAME
+        description: Full name of customer (Initcap formatted)
+
+      - name: EMAIL
+        description: Customer email address
+
+      - name: PHONE_NUMBER
+        description: Customer phone number
+
+      - name: GENDER
+        description: Gender of the customer
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Male', 'Female', 'Other']
+
+
+      - name: DATE_OF_BIRTH
+        description: Date of birth (converted to DATE)
+    
+
+
+      - name: AGE
+        description: Calculated age using macro
+
+      - name: AGE_GROUP
+        description: Age segmentation bucket
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Minor (0-17)', 'Young Adult (18-25)', 'Adult (26-35)', 'Mid Age (36-50)', 'Senior (51-65)', 'Elderly (65+)']
+
+      - name: INCOME_BRACKET
+        description: Income category of the customer
+
+      - name: MARITAL_STATUS
+        description: Marital status of the customer
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Single', 'Married', 'Divorced']
+
+      - name: LOCATION_ID
+        description: Foreign key to location
+
+      - name: REGISTRATION_DATE
+        description: Date when customer registered
+
+      - name: CREDIT_CARD_NUMBER
+        description: Masked or raw credit card number
+
+      - name: UPI_ID
+        description: UPI identifier
+
+      - name: _LOADED_AT
+        description: Ingestion timestamp used for snapshot tracking
+
+      - name: DBT_VALID_FROM
+        description: Start timestamp of record validity
+
+      - name: DBT_VALID_TO
+        description: End timestamp of record validity (NULL = current)
+
+      - name: DBT_SCD_ID
+        description: Unique identifier for each version of record
