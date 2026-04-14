@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: int_seller_snapshot
+    description: "Snapshot table for seller data"
+
+    columns:
+
+      - name: seller_id
+        description: "Unique identifier for seller"
+        tests:
+          - not_null
+          - unique
+
+      - name: seller_name
+        description: "Seller business name"
+        tests:
+          - not_null
+
+      - name: email
+        description: "Seller email address"
+        tests:
+          - not_null
+
+      - name: phone_number
+        description: "Seller contact number"
+
+      - name: join_date
+        description: "Seller onboarding date"
+        tests:
+          - not_null
+
+      - name: location_id
+        description: "Seller location reference"
+        tests:
+          - not_null
+          - relationships:
+                to: ref('INT_LOCATION')
+                field: location_id
+                
+      - name: rating
+        description: "Seller rating (0–5 scale)"
+        tests:
+          - not_null
+
+      - name: category_focus
+        description: "Primary category seller operates in"
+
+      - name: bank_account_number
+        description: "Seller bank account number"
+
+      - name: ifsc_code
+        description: "Bank IFSC code"
+
+      - name: _loaded_at
+        description: "Ingestion timestamp"
+        tests:
+          - not_null

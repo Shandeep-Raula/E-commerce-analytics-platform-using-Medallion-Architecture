@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: int_delivery_person_snapshot
+    description: "Snapshot table for delivery personnel data"
+
+    columns:
+
+      - name: delivery_person_id
+        description: "Unique identifier for delivery person"
+        tests:
+          - not_null
+          - unique
+
+      - name: delivery_person_name
+        description: "Full name of delivery person"
+        tests:
+          - not_null
+
+      - name: employment_type
+        description: "Employment type (Full-Time / Contract)"
+        tests:
+          - accepted_values:
+              values: ['Full-Time', 'Contract']
+
+      - name: gender
+        description: "Gender of delivery person"
+        tests:
+          - accepted_values:
+              values: ['Male', 'Female']
+
+      - name: location_id
+        description: "Location reference ID"
+        tests:
+          - not_null
+          - relationships:
+                to: ref('INT_LOCATION')
+                field: location_id
+
+      - name: phone_number
+        description: "Contact number"
+
+      - name: vehicle_type
+        description: "Type of vehicle used"
+        tests:
+          - accepted_values:
+              values: ['Bike', 'Scooter', 'EV Bike', 'Van']
+
+      - name: _loaded_at
+        description: "Ingestion timestamp"
+        tests:
+          - not_null

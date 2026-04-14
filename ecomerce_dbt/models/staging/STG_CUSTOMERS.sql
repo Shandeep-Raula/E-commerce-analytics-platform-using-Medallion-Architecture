@@ -24,7 +24,7 @@ FROM {{ source('ecommerce_landing', 'raw_customers') }}
 {% if is_incremental() %}
 
 WHERE "_loaded_at" > (
-    SELECT COALESCE(MAX(_loaded_at), '1900-01-01'::TIMESTAMP_TZ)
+    SELECT COALESCE(MAX("_loaded_at"), '1900-01-01'::TIMESTAMP_TZ)
     FROM {{ this }}
 )
 

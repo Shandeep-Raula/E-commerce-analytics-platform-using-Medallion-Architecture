@@ -22,7 +22,7 @@ WITH base AS (
         INCOME_BRACKET,
         MARITAL_STATUS,
         LOCATION_ID,
-        REGISTRATION_DATE,
+        TO_DATE(REGISTRATION_DATE, 'DD-MM-YYYY') AS registration_date,
         CREDIT_CARD_NUMBER,
         UPI_ID,
         _LOADED_AT,      

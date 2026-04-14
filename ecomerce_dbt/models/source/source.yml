@@ -34,3 +34,9 @@ sources:
 
       - name: raw_payment
         description: "Payment transaction details including payment method and status"
+
+      - name: raw_order
+        description: "Order details including order ID, customer ID, product ID, quantity, and total amount"
+
+      - name: raw_marketing
+        description: "Marketing campaign data including campaign name, channel, and performance metrics"
