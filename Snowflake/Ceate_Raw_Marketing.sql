@@ -1,0 +1,30 @@
+CREATE OR REPLACE TABLE RAW_MARKETING (
+
+    MARKETING_ID        STRING,
+    DATE                DATE,
+
+    CAMPAIGN_ID         STRING,
+    CHANNEL_ID          STRING,
+    LOCATION_ID         STRING,
+
+    SPEND_AMOUNT        NUMBER(12,2),
+    IMPRESSIONS         NUMBER(12,0),
+    CLICKS              NUMBER(12,0),
+    CONVERSIONS         NUMBER(12,0),
+
+    REVENUE_GENERATED   NUMBER(12,2),
+
+    CAMPAIGN_NAME       STRING,
+    CAMPAIGN_TYPE       STRING,
+    OBJECTIVE           STRING,
+
+    CHANNEL_TYPE        STRING,
+    DESCRIPTION         STRING,
+
+    STATE               STRING,
+    CITY                STRING,
+
+    -- Metadata
+    _LOADED_AT          TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP()
+
+);
