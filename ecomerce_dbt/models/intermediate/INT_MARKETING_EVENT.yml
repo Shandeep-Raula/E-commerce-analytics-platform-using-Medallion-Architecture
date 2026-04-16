@@ -1,0 +1,82 @@
+version: 2
+
+models:
+  - name: INT_MARKETING_EVENT
+    description: "Enriched marketing dataset with campaign performance metrics, spend, and conversion data"
+
+    columns:
+      - name: marketing_id
+        description: "Unique identifier for each marketing record"
+        tests:
+          - not_null
+          - unique
+
+      - name: event_date
+        description: "Date of the marketing activity"
+        tests:
+          - not_null
+
+      - name: campaign_id
+        description: "Unique campaign identifier"
+        tests:
+            - not_null
+
+      - name: channel_id
+        description: "Marketing channel identifier"
+        tests:
+            - not_null
+
+      - name: location_id
+        description: "Location identifier for campaign targeting"
+        tests:
+            - not_null
+
+      - name: spend_amount
+        description: "Total marketing spend for the campaign"
+
+      - name: impressions
+        description: "Number of times the ad was shown"
+
+      - name: clicks
+        description: "Number of clicks on the ad"
+
+      - name: conversions
+        description: "Number of successful conversions"
+
+      - name: revenue_generated
+        description: "Revenue generated from the campaign"
+
+      - name: campaign_name
+        description: "Name of the marketing campaign"
+
+      - name: campaign_type
+        description: "Type of campaign "
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['PROMOTIONAL', 'AWARENESS', 'LOYALTY', 'DISCOUNT']
+
+      - name: objective
+        description: "Marketing objective (e.g., awareness, conversion)"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['RETENTION', 'ACQUISITION', 'BRAND AWARENESS', 'ENGAGEMENT']
+
+                
+      - name: channel_type
+        description: "Type of marketing channel"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['DIGITAL', 'OFFLINE']
+                
+      - name: description
+        description: "Description of the campaign"
+
+      - name: state
+        description: "State where campaign was targeted"
+
+      - name: city
+        description: "City where campaign was targeted"
+

@@ -16,6 +16,10 @@ models:
         description: "Name of the channel (e.g., Organic, Paid Ads, Email, Social)"
         tests:
           - not_null
+          - accepted_values:
+              arguments:
+                values: ['SOCIAL', 'AFFILIATE', 'SMS', 'PAID ADS', 'MARKETPLACES', 'ORGANIC', 'EMAIL', 'REFERRAL', 'APP', 'OFFLINE']
+
 
       - name: channel_type
         description: "Type of channel (Digital or Offline)"

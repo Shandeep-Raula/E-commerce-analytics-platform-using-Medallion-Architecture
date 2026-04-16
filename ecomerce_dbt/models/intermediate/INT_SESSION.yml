@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: INT_SESSION
+    description: " session-level dataset with behavioral KPIs and engagement metrics for analytics"
+
+    columns:
+      - name: session_id
+        description: "Unique identifier for each session"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Unique identifier for the customer"
+
+      - name: channel_id
+        description: "Marketing or acquisition channel identifier"
+
+      - name: session_date
+        description: "Date of the session"
+
+      - name: device_type
+        description: "Device used during the session (mobile, desktop, etc.)"
+
+      - name: exit_page_type
+        description: "Page type where the session ended"
+
+      - name: page_views
+        description: "Total number of pages viewed in the session"
+
+      - name: product_views
+        description: "Number of product detail views"
+
+      - name: add_to_cart_count
+        description: "Number of times products were added to cart"
+
+      - name: wishlist_additions
+        description: "Number of products added to wishlist"
+
+      - name: search_count
+        description: "Number of searches performed in the session"
+
+      - name: checkout_attempts
+        description: "Number of checkout attempts"
+
+      - name: purchases
+        description: "Number of completed purchases"
+
+      - name: session_duration_in_sec
+        description: "Total session duration in seconds"
+
+      - name: is_converted
+        description: "Flag indicating whether the session resulted in a purchase (1 = yes, 0 = no)"
+        tests:
+          - not_null
+
+      - name: add_to_cart_rate
+        description: "Ratio of add-to-cart actions to product views"
+
+      - name: checkout_conversion_rate
+        description: "Ratio of purchases to checkout attempts"
+
+      - name: engagement_level
+        description: "Categorized engagement level based on session duration (Low, Medium, High)"
+        tests:
+          - accepted_values:
+              values: ['Low', 'Medium', 'High']

@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: INT_PRODUCT
+    description: "Integrated product dimension containing product details across brands and categories"
+
+    columns:
+      - name: product_id
+        description: "Unique identifier for each product"
+        tests:
+          - not_null
+          - unique
+
+      - name: product_name
+        description: "Name of the product"
+        tests:
+          - not_null
+
+      - name: brand
+        description: "Brand of the product"
+        tests:
+          - not_null
+
+      - name: category
+        description: "High-level product category "
+        tests:
+          - not_null
+
+      - name: sub_category
+        description: "Sub-category of the product (e.g., Mobile)"
+        tests:
+          - not_null
+
+      - name: price
+        description: "Listed price of the product"
+        tests:
+          - not_null

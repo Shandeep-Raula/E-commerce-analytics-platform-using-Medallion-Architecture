@@ -4,6 +4,7 @@
     unique_key='seller_id'
 ) }}
 
+
 SELECT 
 "seller_id"       AS seller_id,
 "seller_name"     AS seller_name,
@@ -19,12 +20,9 @@ SELECT
 
 FROM {{ source('ecommerce_landing', 'raw_sellers') }}
 
-
 {% if is_incremental() %}
-
-WHERE "_loaded_at" > (
-    SELECT COALESCE(MAX("_loaded_at"), '1900-01-01'::TIMESTAMP_TZ)
+WHERE _loaded_at > (
+    SELECT COALESCE(MAX(_loaded_at), '1900-01-01')
     FROM {{ this }}
 )
-
 {% endif %}

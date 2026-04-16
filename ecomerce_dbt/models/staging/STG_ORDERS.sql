@@ -41,36 +41,8 @@ select
 
     "DELIVERY_DELAY_DAYS"        AS delivery_delay_days,
     "DELIVERY_SLA_DAYS"          AS delivery_sla_days,
-    "SERVICE_LEVEL"              AS service_level,
-    "VEHICLE_TYPE"               AS vehicle_type,
 
-    "STATE"                      AS state,
-    "CITY"                       AS city,
-    "POSTAL_CODE"                AS postal_code,
-    "LOCATION_ID_CUSTOMER"       AS location_id_customer,
-    "LOCATION_ID_DELIVERY_PERSON" AS location_id_delivery_person,
-
-    "FIRST_NAME"                 AS first_name,
-    "LAST_NAME"                  AS last_name,
-    "EMAIL"                      AS email,
-    "PHONE_NUMBER"               AS phone_number,
-
-    "PRODUCT_NAME"               AS product_name,
-    "BRAND"                      AS brand,
-    "CATEGORY_PRODUCT"           AS category_product,
-    "SUB_CATEGORY"               AS sub_category,
-    "LIST_PRICE"                 AS list_price,
-
-    "DELIVERY_PERSON_NAME"       AS delivery_person_name,
-    "PHONE_NUMBER_DELIVERY_PERSON" AS phone_number_delivery_person,
-
-    "PAYMENT_METHOD"             AS payment_method,
-    "PAYMENT_PROVIDER"           AS payment_provider,
     "PAYMENT_DETAILS"            AS payment_details,
-
-    "SELLER_NAME"                AS seller_name,
-    "EMAIL_SELLER"               AS email_seller,
-    "PHONE_NUMBER_SELLER"        AS phone_number_seller,
 
     "_LOADED_AT"                 AS _loaded_at
 
