@@ -16,10 +16,10 @@ SELECT
     channel_id,
     location_id,
 
-    CAST(spend_amount AS NUMBER(10,2))        AS spend_amount,
-    CAST(impressions AS NUMBER(12,0))         AS impressions,
-    CAST(clicks AS NUMBER(12,0))              AS clicks,
-    CAST(conversions AS NUMBER(12,0))         AS conversions,
+    CAST(spend_amount AS NUMBER(10,2))    AS spend_amount,
+    CAST(impressions AS NUMBER(12,0))    AS impressions,
+    CAST(clicks AS NUMBER(12,0))     AS clicks,
+    CAST(conversions AS NUMBER(12,0))    AS conversions,
 
     CAST(revenue_generated AS NUMBER(10,2))   AS revenue_generated,
 
@@ -57,8 +57,8 @@ select
     {{ calculate_cpm('spend_amount', 'impressions') }} AS cpm,
     {{ calculate_rpc('revenue_generated', 'clicks') }} AS rpc,
 
-    INITCAP(TRIM(campaign_name)) AS campaign_name,
     
+    INITCAP(TRIM(campaign_name)) AS campaign_name,
     UPPER(TRIM(campaign_type)) AS campaign_type,
     UPPER(TRIM(objective)) AS objective,
 

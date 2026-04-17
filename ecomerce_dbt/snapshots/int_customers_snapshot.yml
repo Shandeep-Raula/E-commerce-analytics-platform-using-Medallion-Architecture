@@ -31,7 +31,7 @@ snapshots:
         tests:
           - accepted_values:
               arguments:
-                values: ['Male', 'Female', 'Other']
+                values: ['MALE', 'FEMALE', 'OTHER']
 
 
       - name: DATE_OF_BIRTH
@@ -47,7 +47,7 @@ snapshots:
         tests:
           - accepted_values:
               arguments:
-                values: ['Minor (0-17)', 'Young Adult (18-25)', 'Adult (26-35)', 'Mid Age (36-50)', 'Senior (51-65)', 'Elderly (65+)']
+                values: ['MINOR (0-17)', 'YOUNG ADULT (18-25)', 'ADULT (26-35)', 'MID AGE (36-50)', 'SENIOR (51-65)', 'ELDERLY (65+)']
 
       - name: INCOME_BRACKET
         description: Income category of the customer
@@ -57,10 +57,14 @@ snapshots:
         tests:
           - accepted_values:
               arguments:
-                values: ['Single', 'Married', 'Divorced']
+                values: ['SINGLE', 'MARRIED', 'DIVORCED']
 
       - name: LOCATION_ID
         description: Foreign key to location
+        tests:
+          - relationships:
+                to: ref('INT_LOCATION')
+                field: location_id
 
       - name: REGISTRATION_DATE
         description: Date when customer registered

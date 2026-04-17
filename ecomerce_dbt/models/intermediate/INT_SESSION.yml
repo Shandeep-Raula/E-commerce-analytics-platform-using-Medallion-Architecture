@@ -13,9 +13,19 @@ models:
 
       - name: customer_id
         description: "Unique identifier for the customer"
+        tests:
+          - not_null
+          - relationships:
+                to: ref('INT_CUSTOMERS_SNAPSHOT')
+                field: customer_id
 
       - name: channel_id
         description: "Marketing or acquisition channel identifier"
+        tests:
+          - not_null
+          - relationships:
+                to: ref('INT_CHANNEL')
+                field: channel_id
 
       - name: session_date
         description: "Date of the session"
@@ -65,4 +75,4 @@ models:
         description: "Categorized engagement level based on session duration (Low, Medium, High)"
         tests:
           - accepted_values:
-              values: ['Low', 'Medium', 'High']
+              values: ['LOW', 'MEDIUM', 'HIGH']

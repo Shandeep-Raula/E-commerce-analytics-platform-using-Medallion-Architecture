@@ -21,13 +21,13 @@ models:
         description: "Employment type (Full-Time / Contract)"
         tests:
           - accepted_values:
-              values: ['Full-Time', 'Contract']
+              values: ['FULL-TIME', 'CONTRACT']
 
       - name: gender
         description: "Gender of delivery person"
         tests:
           - accepted_values:
-              values: ['Male', 'Female']
+              values: ['MALE', 'FEMALE']
 
       - name: location_id
         description: "Location reference ID"
@@ -44,7 +44,7 @@ models:
         description: "Type of vehicle used"
         tests:
           - accepted_values:
-              values: ['Bike', 'Scooter', 'EV Bike', 'Van']
+              values: ['BIKE', 'SCOOTER', 'EV BIKE', 'VAN']
 
       - name: _loaded_at
         description: "Ingestion timestamp"

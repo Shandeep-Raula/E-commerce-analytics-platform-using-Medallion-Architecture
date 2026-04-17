@@ -24,12 +24,17 @@ models:
       - name: channel_id
         description: "Marketing channel identifier"
         tests:
-            - not_null
+          - relationships:
+                to: ref('INT_CHANNEL')
+                field: channel_id
 
       - name: location_id
         description: "Location identifier for campaign targeting"
         tests:
-            - not_null
+          - not_null
+          - relationships:
+                to: ref('INT_LOCATION')
+                field: location_id
 
       - name: spend_amount
         description: "Total marketing spend for the campaign"
