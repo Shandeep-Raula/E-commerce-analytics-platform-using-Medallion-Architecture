@@ -80,7 +80,7 @@ models:
           - unique
           - not_null
 
-  - name: DIM_FULLFILLMENT
+  - name: DIM_FULFILLMENT
     description: "Dimension table for fulfillment methods, including type and details."
     columns:
       - name: fulfillment_id

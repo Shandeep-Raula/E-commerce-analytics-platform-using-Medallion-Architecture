@@ -48,7 +48,7 @@ with base as (
         payment_details,
 
         _loaded_at,
-        ROW_NUMBER() OVER (PARTITION BY order_line_id ORDER BY _loaded_at DESC) as rn
+        ROW_NUMBER() OVER (PARTITION BY order_line_id ORDER BY order_date DESC) as rn
 
     FROM {{ ref('STG_ORDERS') }}
 
