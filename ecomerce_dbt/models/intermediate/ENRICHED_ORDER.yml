@@ -1,0 +1,126 @@
+version: 2
+
+models:
+  - name: ENRICHED_ORDER
+    description: "Enriched orders dataset with financial metrics, delivery performance, and customer feedback"
+
+    columns:
+
+      - name: order_line_id
+        description: "Unique identifier for each order line"
+        tests:
+          - not_null
+
+
+      - name: order_id
+        description: "Order identifier"
+
+      - name: order_date
+        description: "Date when the order was placed"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Customer identifier"
+
+      - name: product_id
+        description: "Product identifier"
+
+      - name: seller_id
+        description: "Seller identifier"
+
+      - name: location_id
+        description: "Location identifier"
+
+      - name: delivery_person_id
+        description: "Delivery partner identifier"
+
+      - name: payment_id
+        description: "Payment identifier"
+
+      - name: campaign_id
+        description: "Marketing campaign identifier"
+
+      - name: fulfillment_id
+        description: "Fulfillment process identifier"
+
+      
+      - name: quantity
+        description: "Number of items ordered"
+        tests:
+          - not_null
+
+      - name: unit_price
+        description: "Price per unit"
+        tests:
+          - not_null
+
+      - name: discount_percentage
+        description: "Discount percentage applied"
+
+      - name: tax_percentage
+        description: "Tax percentage applied"
+
+      - name: shipping_fee
+        description: "Shipping cost"
+
+      
+      - name: gross_amount
+        description: "Total amount before discount"
+
+      - name: discount_amount
+        description: "Discount value applied on order"
+
+      - name: tax_amount
+        description: "Tax calculated after discount"
+
+      - name: order_value
+        description: "Final order value including tax and shipping"
+
+      
+      - name: expected_delivery_date
+        description: "Expected delivery date"
+
+      - name: actual_delivery_date
+        description: "Actual delivery date"
+
+      - name: return_date
+        description: "Date when order was returned"
+
+      - name: delivery_delay
+        description: "Delay in delivery (days)"
+
+      
+      - name: order_status
+        description: "Current order status"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['COMPLETED', 'RETURNED', 'CANCELLED']
+
+      - name: return_flag
+        description: "Indicates if order was returned"
+
+      - name: refund_amount
+        description: "Refund issued for the order"
+
+      
+      - name: delivery_rating
+        description: "Rating given to delivery service"
+
+      - name: seller_rating
+        description: "Rating given to seller"
+
+      - name: customer_rating
+        description: "Customer satisfaction rating"
+
+      
+      - name: review_text
+        description: "Customer review text"
+
+      - name: sentiment_score
+        description: "Sentiment score derived from review"
+
+      
+      - name: payment_details
+        description: "Payment method details"

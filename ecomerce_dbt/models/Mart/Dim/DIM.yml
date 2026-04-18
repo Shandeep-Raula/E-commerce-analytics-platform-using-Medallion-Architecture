@@ -1,0 +1,100 @@
+version: 2
+
+models:
+  - name: DIM_CUSTOMER
+    description: "Dimension table for customers, containing demographic and geographic information."
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer."
+        tests:
+          - unique
+          - not_null
+
+      - name: location_id
+        description: "Unique identifier for each delivery person."
+        tests:
+          - not_null      
+          - relationships:
+              to: ref('DIM_LOCATION')
+              field: location_id 
+
+  - name: DIM_CHANNEL
+    description: "Dimension table for sales channels, including online, mobile, and in-store."
+    columns:
+      - name: channel_id
+        description: "Unique identifier for each sales channel."
+        tests:
+          - unique
+          - not_null
+
+  - name: DIM_SELLER
+    description: "Dimension table for sellers, containing demographic and geographic information."
+    columns:
+      - name: seller_id
+        description: "Unique identifier for each seller."
+        tests:
+          - unique
+          - not_null
+
+  - name: DIM_PRODUCT
+    description: "Dimension table for products, including category and price information."
+    columns:
+      - name: product_id
+        description: "Unique identifier for each product."
+        tests:
+          - unique
+          - not_null
+
+  - name: DIM_LOCATION
+    description: "Dimension table for locations, including geographic information."
+    columns:
+      - name: location_id
+        description: "Unique identifier for each location."
+        tests:
+          - unique
+          - not_null
+
+  - name: DIM_DELIVERY_PERSON
+    description: "Dimension table for delivery personnel, containing demographic and geographic information."
+    columns:
+      - name: delivery_person_id
+        description: "Unique identifier for each delivery person."
+        tests:
+          - unique
+          - not_null
+
+      - name: location_id
+        description: "Unique identifier for each delivery person."
+        tests:
+          - not_null      
+          - relationships:
+              to: ref('DIM_LOCATION')
+              field: location_id 
+
+  - name: DIM_PAYMENT
+    description: "Dimension table for payment methods, including type and details."
+    columns:
+      - name: payment_id
+        description: "Unique identifier for each payment method."
+        tests:
+          - unique
+          - not_null
+
+  - name: DIM_FULLFILLMENT
+    description: "Dimension table for fulfillment methods, including type and details."
+    columns:
+      - name: fulfillment_id
+        description: "Unique identifier for each fulfillment method."
+        tests:
+          - unique
+          - not_null
+
+  - name: DIM_CAMPAIGN
+    description: "Dimension table for marketing campaigns, including type and details."
+    columns:
+      - name: campaign_id
+        description: "Unique identifier for each marketing campaign."
+        tests:
+          - unique
+          - not_null
+

@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: FACT_SALES
+    description: "Fact table containing order-level transactional data"
+
+    columns:
+
+      - name: order_line_id
+        description: "Unique identifier for each order line"
+        tests:
+          - not_null
+          - unique
+
+      - name: order_id
+        description: "Identifier for the order (can have multiple order lines)"
+        tests:
+          - not_null
+
+      - name: order_date
+        description: "Date when the order was placed"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Customer placing the order"
+        tests:
+          - relationships:
+              to: ref('DIM_CUSTOMER')
+              field: customer_id
+
+      - name: product_id
+        description: "Product included in the order"
+        tests:
+          - relationships:
+              to: ref('DIM_PRODUCT')
+              field: product_id
+
+      - name: seller_id
+        description: "Seller fulfilling the order"
+        tests:
+          - relationships:
+              to: ref('DIM_SELLER')
+              field: seller_id
+
+      - name: location_id
+        description: "Location where the order was placed or delivered"
+        tests:
+          - relationships:
+              to: ref('DIM_LOCATION')
+              field: location_id
+
+      - name: payment_id
+        description: "Payment transaction identifier"
+        tests:
+          - relationships:
+              to: ref('DIM_PAYMENT')
+              field: payment_id
+
+      - name: campaign_id
+        description: "Marketing campaign associated with the order"
+        tests:
+          - relationships:
+              to: ref('DIM_CAMPAIGN')
+              field: campaign_id
+
+      - name: fulfillment_id
+        description: "Fulfillment process identifier"
+        tests:
+          - relationships:
+              to: ref('DIM_FULFILLMENT')
+              field: fulfillment_id       

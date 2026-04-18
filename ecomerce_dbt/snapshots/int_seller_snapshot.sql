@@ -10,7 +10,7 @@
     )
 }}
 
-WITH seller AS (
+with seller as (
 select
     SELLER_ID,
     INITCAP(TRIM(SELLER_NAME)) AS SELLER_NAME,
@@ -22,11 +22,11 @@ select
     UPPER(TRIM(CATEGORY_FOCUS)) AS CATEGORY_FOCUS,
     TO_VARCHAR(
     TRY_TO_NUMBER(BANK_ACCOUNT_NUMBER)
-) AS BANK_ACCOUNT_NUMBER,
+) as BANK_ACCOUNT_NUMBER,
     IFSC_CODE,
     _LOADED_AT
-    FROM {{ ref('STG_SELLERS') }}
+    from {{ ref('STG_SELLERS') }}
 )
-SELECT * FROM seller
+select * from seller
 
 {% endsnapshot %}

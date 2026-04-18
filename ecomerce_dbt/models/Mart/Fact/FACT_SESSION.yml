@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: FACT_SESSION
+    description: "Fact table capturing user session activity across channels"
+
+    columns:
+
+      - name: session_id
+        description: "Unique identifier for each session"
+        tests:
+          - not_null
+
+
+      - name: customer_id
+        description: "Customer associated with the session"
+        tests:
+          - relationships:
+              to: ref('DIM_CUSTOMER')
+              field: customer_id
+
+      - name: channel_id
+        description: "Channel through which the session originated"
+        tests:
+          - relationships:
+              to: ref('DIM_CHANNEL')
+              field: channel_id
+
+      - name: session_date
+        description: "Date of the session"
+        tests:
+          - not_null

@@ -41,11 +41,3 @@ select
 from {{ ref('INT_MARKETING_EVENT') }}
 
 
-{% if is_incremental() %}
-
-where event_date > (
-    select coalesce(max(event_date), '1900-01-01')
-    from {{ this }}
-)
-
-{% endif %}

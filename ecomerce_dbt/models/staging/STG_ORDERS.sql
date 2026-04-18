@@ -38,11 +38,9 @@ select
     "REFUND_AMOUNT"              AS refund_amount,
     "REVIEW_TEXT"                AS review_text,
     "SENTIMENT_SCORE"            AS sentiment_score,
-
+    "PAYMENT_DETAILS"            AS payment_details,
     "DELIVERY_DELAY_DAYS"        AS delivery_delay_days,
     "DELIVERY_SLA_DAYS"          AS delivery_sla_days,
-
-    "PAYMENT_DETAILS"            AS payment_details,
 
     "_LOADED_AT"                 AS _loaded_at
 

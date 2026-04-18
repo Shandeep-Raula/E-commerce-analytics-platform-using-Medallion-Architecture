@@ -10,7 +10,7 @@ WITH marketing AS (
 
 SELECT
     marketing_id,
-    TO_DATE(date) AS event_date,
+    date AS event_date,
 
     campaign_id,
     channel_id,

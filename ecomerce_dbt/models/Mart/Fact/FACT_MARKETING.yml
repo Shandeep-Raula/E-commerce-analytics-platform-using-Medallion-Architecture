@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: FACT_MARKETING
+    description: "Fact table capturing marketing campaign performance across channels and locations"
+
+    columns:
+
+      - name: marketing_id
+        description: "Unique identifier for each marketing record"
+        tests:
+          - not_null
+          - unique
+
+      - name: event_date
+        description: "Date of the marketing activity"
+        tests:
+          - not_null
+
+      - name: campaign_id
+        description: "Identifier for the marketing campaign"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('DIM_CAMPAIGN')
+              field: campaign_id
+
+      - name: channel_id
+        description: "Marketing channel identifier"
+        tests:
+          - relationships:
+              to: ref('DIM_CHANNEL')
+              field: channel_id
+
+      - name: location_id
+        description: "Location identifier for campaign targeting"
+        tests:
+          - relationships:
+              to: ref('DIM_LOCATION')
+              field: location_id

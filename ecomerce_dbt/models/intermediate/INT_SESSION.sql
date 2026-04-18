@@ -9,7 +9,7 @@ WITH base AS (
         session_id,
         customer_id,
         channel_id,
-        TRY_TO_DATE(date) AS session_date,
+        date AS session_date,
 
         UPPER(TRIM(device_type)) AS device_type,
 

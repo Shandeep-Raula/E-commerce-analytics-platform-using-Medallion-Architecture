@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: FACT_DELIVERY
+    description: "Fact table capturing delivery performance, timelines, and ratings for each order line"
+
+    columns:
+
+      - name: order_line_id
+        description: "Unique identifier for each order line"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('FACT_SALES')
+              field: order_line_id
+
+      - name: delivery_person_id
+        description: "Identifier of the delivery person handling the order"
+        tests:
+          - relationships:
+              to: ref('DIM_DELIVERY_PERSON')
+              field: delivery_person_id
+
+      - name: expected_delivery_date
+        description: "Scheduled delivery date"
+        tests:
+          - not_null
+
+      - name: actual_delivery_date
+        description: "Actual delivery completion date"
+
+      - name: delivery_delay_days
+        description: "Number of days delivery was delayed (can be negative for early delivery)"
+
+      - name: delivery_rating
+        description: "Rating given to the delivery experience"
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 5
+      
+      - name: delivery_delay_category
+        description: "Categorization of delivery delay based on the number of delayed days"
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['ON TIME', 'SLIGHT DELAY (1-2 DAYS)', 'MODERATE DELAY (3-5 DAYS)']
