@@ -21,6 +21,7 @@ WITH dedup AS (
 SELECT 
     order_line_id,
     delivery_person_id,
+    fulfillment_id,
     order_date,
     expected_delivery_date,
     actual_delivery_date,

@@ -13,6 +13,8 @@ SELECT
     seller_rating,
     customer_rating,
     review_text,
-    sentiment_score
+    sentiment_score,
+    {{ sentiment_category('sentiment_score') }} AS sentiment_category
+
 
 FROM {{ ref('ENRICHED_ORDER') }}
