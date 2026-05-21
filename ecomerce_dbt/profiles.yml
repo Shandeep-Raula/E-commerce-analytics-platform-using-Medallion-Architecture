@@ -1,13 +1,13 @@
 ecomerce_dbt:
   outputs:
     dev:
-      account: NFBSLVN-YD17402
+      account: 
       database: ECOMMERCE
-      password: Shandeep@200311
+      password: 
       role: ACCOUNTADMIN
       schema: LANDING
       threads: 1
       type: snowflake
-      user: SHANDEEPRAULA
+      user: 
       warehouse: COMPUTE_WH
   target: dev
