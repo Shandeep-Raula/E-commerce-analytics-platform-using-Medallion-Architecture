@@ -398,12 +398,11 @@ The `EDA/` folder contains Jupyter notebooks covering the full analytical spectr
  
 ```
 EDA/
-├── 01_customer_eda.ipynb          # Age distribution, gender breakdown, regional analysis
-├── 02_order_eda.ipynb             # Order volume trends, status distribution, revenue patterns
-├── 03_product_eda.ipynb           # Category performance, price distribution, brand analysis
-├── 04_session_eda.ipynb           # Funnel visualisation, channel performance, drop-off rates
-├── 05_marketing_eda.ipynb         # CTR, ROAS, campaign ROI analysis
-├── 06_delivery_eda.ipynb          # SLA compliance, delivery time distribution
+├── 01_order_eda.ipynb        # Order volume trends, status distribution, revenue patterns
+├── 02_delivery_eda.ipynb     # SLA compliance, delivery time distribution
+├── 03_feedback_eda.ipynb     # Customer ratings, sentiment analysis, review trends
+├── 04_session_eda.ipynb      # Funnel visualisation, channel performance, drop-off rates
+├── 05_marketing_eda.ipynb    # CTR, ROAS, campaign ROI analysis
 ```
  
 ## 🎓 Learning Outcomes
