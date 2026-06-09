@@ -161,9 +161,6 @@ The schema supports key analytical domains including:
  
 dbt is the **transformation engine** of this platform. All business logic lives in version-controlled SQL — no stored procedures, no black boxes.
  
-![dbt DAG Pipeline](dag_pipeline.png)
- 
-> *Above: dbt DAG showing full model lineage from seeds and sources through Bronze → Silver → Gold.*
  
 ### dbt Project Components
  
@@ -311,51 +308,51 @@ The Gold layer surfaces the following business KPIs, consumed directly by Power 
  
 ### Revenue & Orders
  
-| KPI | Definition | Target |
-|---|---|---|
-| **Gross Revenue** | SUM(quantity × price) across all delivered orders | — |
-| **Average Order Value (AOV)** | Gross Revenue / Total Orders | > ₹1,500 |
-| **Monthly Revenue Growth** | MoM revenue delta % | > 5% |
-| **Revenue by Category** | Revenue grouped by product category | — |
-| **Revenue by Region** | Revenue grouped by customer region | — |
+| KPI | Definition |
+|---|---|
+| **Gross Revenue** | SUM(quantity × price) across all delivered orders |
+| **Average Order Value (AOV)** | Gross Revenue / Total Orders |
+| **Monthly Revenue Growth** | MoM revenue delta % |
+| **Revenue by Category** | Revenue grouped by product category |
+| **Revenue by Region** | Revenue grouped by customer region |
  
 ### Customer Metrics
  
-| KPI | Definition | Target |
-|---|---|---|
-| **Customer Lifetime Value (CLV)** | Total revenue per customer across all orders | > ₹8,000 |
-| **Customer Acquisition Rate** | New customers per month | — |
-| **Repeat Purchase Rate** | % customers with 2+ orders | > 35% |
-| **Churn Rate** | % customers with no order in 90 days | < 20% |
-| **Customer Age Distribution** | Cohort breakdown by age bucket | — |
+| KPI | Definition |
+|---|---|
+| **Customer Lifetime Value (CLV)** | Total revenue per customer across all orders |
+| **Customer Acquisition Rate** | New customers per month |
+| **Repeat Purchase Rate** | % customers with 2+ orders |
+| **Churn Rate** | % customers with no order in 90 days |
+| **Customer Age Distribution** | Cohort breakdown by age bucket |
  
 ### Marketing & Channel
  
-| KPI | Definition | Target |
-|---|---|---|
-| **Click-Through Rate (CTR)** | Clicks / Impressions | > 2.5% |
-| **Conversion Rate** | Conversions / Clicks | > 3% |
-| **Return on Ad Spend (ROAS)** | Revenue / Marketing Spend | > 4× |
-| **Cost per Conversion** | Total Spend / Conversions | < ₹250 |
-| **Revenue by Channel** | Revenue attributed to each marketing channel | — |
+| KPI | Definition |
+|---|---|
+| **Click-Through Rate (CTR)** | Clicks / Impressions |
+| **Conversion Rate** | Conversions / Clicks |
+| **Return on Ad Spend (ROAS)** | Revenue / Marketing Spend |
+| **Cost per Conversion** | Total Spend / Conversions |
+| **Revenue by Channel** | Revenue attributed to each marketing channel |
  
 ### Session & Funnel
  
-| KPI | Definition | Target |
-|---|---|---|
-| **Add-to-Cart Rate** | ADD_TO_CART / PRODUCT_VIEWS | > 15% |
-| **Purchase Conversion Rate** | PURCHASES / ADD_TO_CART | > 25% |
-| **Page Views per Session** | AVG(PAGE_VIEWS) | > 5 |
-| **Sessions by Channel** | Session count grouped by channel | — |
+| KPI | Definition |
+|---|---|
+| **Add-to-Cart Rate** | ADD_TO_CART / PRODUCT_VIEWS |
+| **Purchase Conversion Rate** | PURCHASES / ADD_TO_CART |
+| **Page Views per Session** | AVG(PAGE_VIEWS) |
+| **Sessions by Channel** | Session count grouped by channel |
  
 ### Delivery & Fulfilment
  
-| KPI | Definition | Target |
-|---|---|---|
-| **On-Time Delivery Rate** | Orders delivered within SLA / Total delivered | > 92% |
-| **Average Delivery Days** | AVG(actual delivery days) | < 4 days |
-| **SLA Breach Rate** | Orders exceeding DELIVERY_SLA_DAYS | < 8% |
-| **Delivery Cost per Order** | Total shipping cost / Orders shipped | — |
+| KPI | Definition |
+|---|---|
+| **On-Time Delivery Rate** | Orders delivered within SLA / Total delivered |
+| **Average Delivery Days** | AVG(actual delivery days) |
+| **SLA Breach Rate** | Orders exceeding DELIVERY_SLA_DAYS |
+| **Delivery Cost per Order** | Total shipping cost / Orders shipped |
  
 ---
 
