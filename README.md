@@ -160,7 +160,7 @@ The schema supports key analytical domains including:
 ## 🔧 dbt Workflow
  
 dbt is the **transformation engine** of this platform. All business logic lives in version-controlled SQL — no stored procedures, no black boxes.
- 
+
  
 ### dbt Project Components
  
@@ -299,6 +299,62 @@ dbt docs serve      # Launch docs site on localhost:8080
  
 Every model, column, test, and source is documented inline via `schema.yml` descriptions — enabling the data catalogue to be auto-generated with zero additional tooling.
  
+![DBT Lineage](DBT_Lineage.png)
+
+
+#### Core dbt Commands
+ 
+```bash
+# Parse and validate project
+dbt parse
+ 
+# Run all transformations
+dbt run
+ 
+# Run specific model
+dbt run -s stg_customers
+ 
+# Run model and its dependents
+dbt run -s +stg_customers+
+ 
+# Full refresh (rebuild from scratch)
+dbt run --full-refresh
+ 
+# Run only tests
+dbt test
+ 
+# Run tests for specific model
+dbt test -s stg_customers
+ 
+# Generate documentation
+dbt docs generate
+ 
+# Serve documentation locally
+dbt docs serve
+ 
+# Check lineage and dependencies
+dbt dag
+ 
+# Run in production (with proper error handling)
+dbt run --target prod --profiles-dir ~/.dbt
+ 
+# Debug command (test connections, execute SQL)
+dbt debug
+```
+ 
+#### Data Quality Testing
+ 
+```bash
+# Run all tests
+dbt test
+ 
+# Run with detailed output
+dbt test --verbose
+ 
+# Generate test report
+dbt test --store-failures
+```
+
 ---
 
 
