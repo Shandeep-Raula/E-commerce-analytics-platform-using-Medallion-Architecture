@@ -1,4 +1,4 @@
-# E-commerce Analytics Platform Using Medallion Architecture
+# End-To-End E-commerce Analytics Platform Using Medallion Architecture
 
 ## Business Problem
 
