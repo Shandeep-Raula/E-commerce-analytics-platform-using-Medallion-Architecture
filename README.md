@@ -31,7 +31,7 @@ I built this project to fix all of that. It is a centralised, automated, analyti
 
 ## Project Architecture
 
-![Project Architecture](Project_Architecture.png)
+![Project Architecture](Fig/Project_Architecture.png)
 
 **How the data flows:**
 
@@ -146,7 +146,7 @@ The schema supports these analytical areas:
 
 ### Entity Relationship Diagram
 
-![Entity Relationship Diagram](ER_MODEL.png)
+![Entity Relationship Diagram](Fig/ER_MODEL.png)
 
 ## dbt Workflow
 
@@ -286,7 +286,7 @@ dbt docs serve      # Launch docs site on localhost:8080
 
 Every model, column, test, and source is documented inline through `schema.yml` descriptions, so the data catalogue builds itself with no extra tooling.
 
-![DBT Lineage](DBT_Lineage.png)
+![DBT Lineage](Fig/DBT_Lineage.png)
 
 #### Core dbt Commands
 

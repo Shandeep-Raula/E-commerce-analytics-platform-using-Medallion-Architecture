@@ -1,0 +1,284 @@
+version: 2
+
+models:
+  - name: STG_FULLFILLMENT
+    description: "Staging model over raw_fulfillment (fulfillment methods)."
+    columns:
+      - name: fulfillment_id
+        description: "Unique identifier for each fulfillment method."
+        tests:
+          - unique
+          - not_null
+
+  - name: STG_LOCATION
+    description: "Staging model over raw_location (static reference data)."
+    columns:
+      - name: location_id
+        description: "Unique identifier for each location."
+        tests:
+          - unique
+          - not_null
+
+  - name: STG_PAYMENT
+    description: "Staging model over raw_payment (payment methods)."
+    columns:
+      - name: payment_id
+        description: "Unique identifier for each payment method."
+        tests:
+          - unique
+          - not_null
+
+  - name: STG_CHANNEL
+    description: "Staging model over raw_channel (static reference data)."
+    columns:
+      - name: channel_id
+        description: "Unique identifier for each sales channel."
+        tests:
+          - unique
+          - not_null
+
+  - name: STG_PRODUCTS
+    description: "Staging model for products, with list_price renamed to price."
+    columns:
+      - name: product_id
+        description: "Unique identifier for each product."
+        tests:
+          - unique
+          - not_null
+
+      - name: product_name
+        description: "Name of the product."
+        tests:
+          - not_null
+
+      - name: price
+        description: "List price of the product."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                inclusive: false
+
+  - name: STG_MARKETING
+    description: "Incremental staging model for marketing events (merge on marketing_id)."
+    columns:
+      - name: marketing_id
+        description: "Unique identifier for each marketing record."
+        tests:
+          - unique
+          - not_null
+
+      - name: date
+        description: "Date of the marketing activity."
+        tests:
+          - not_null
+
+      - name: campaign_id
+        description: "Identifier for the marketing campaign."
+        tests:
+          - not_null
+
+      - name: channel_id
+        description: "Marketing channel identifier."
+        tests:
+          - not_null
+
+      - name: _loaded_at
+        description: "Load timestamp used as the incremental high-water mark."
+        tests:
+          - not_null
+
+  - name: STG_ORDERS
+    description: "Incremental staging model for order lines (merge on order_line_id), with dates parsed from DD-MM-YYYY."
+    columns:
+      - name: order_line_id
+        description: "Unique identifier for each order line."
+        tests:
+          - unique
+          - not_null
+
+      - name: order_id
+        description: "Identifier for the order (can have multiple order lines)."
+        tests:
+          - not_null
+
+      - name: order_date
+        description: "Date the order was placed. NULL means the raw value failed to parse."
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Customer placing the order."
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "Product included in the order."
+        tests:
+          - not_null
+
+      - name: seller_id
+        description: "Seller fulfilling the order."
+        tests:
+          - not_null
+
+      - name: quantity
+        description: "Number of units ordered."
+        tests:
+          - not_null
+
+      - name: unit_price
+        description: "Price per unit before discount and tax."
+        tests:
+          - not_null
+
+      - name: expected_delivery_date
+        description: "Scheduled delivery date. NULL means the raw value failed to parse."
+        tests:
+          - not_null
+
+      - name: delivery_rating
+        description: "Rating given to the delivery experience."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 5
+
+      - name: seller_rating
+        description: "Rating given to the seller."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 5
+
+      - name: customer_rating
+        description: "Overall customer rating for the order."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 5
+
+      - name: sentiment_score
+        description: "Sentiment score derived from review text (typically -1 to 1)."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: -1
+                max_value: 1
+
+      - name: _loaded_at
+        description: "Load timestamp used as the incremental high-water mark."
+        tests:
+          - not_null
+
+  - name: STG_SELLERS
+    description: "Append-only staging model for sellers. One row per seller per load, so seller_id repeats by design."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - seller_id
+              - _loaded_at
+    columns:
+      - name: seller_id
+        description: "Identifier of the seller (repeats across loads)."
+        tests:
+          - not_null
+
+      - name: location_id
+        description: "Foreign key to the location of the seller."
+        tests:
+          - not_null
+
+      - name: rating
+        description: "Seller rating."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 5
+
+      - name: _loaded_at
+        description: "Load timestamp used as the incremental high-water mark."
+        tests:
+          - not_null
+
+  - name: STG_CUSTOMERS
+    description: "Append-only staging model for customers. One row per customer per load, so customer_id repeats by design."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - customer_id
+              - _loaded_at
+    columns:
+      - name: customer_id
+        description: "Identifier of the customer (repeats across loads)."
+        tests:
+          - not_null
+
+      - name: location_id
+        description: "Foreign key to the location of the customer."
+        tests:
+          - not_null
+
+      - name: _loaded_at
+        description: "Load timestamp used as the incremental high-water mark."
+        tests:
+          - not_null
+
+  - name: STG_DELIVERY_PERSONS
+    description: "Append-only staging model for delivery persons. One row per person per load, so delivery_person_id repeats by design."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - delivery_person_id
+              - _loaded_at
+    columns:
+      - name: delivery_person_id
+        description: "Identifier of the delivery person (repeats across loads)."
+        tests:
+          - not_null
+
+      - name: location_id
+        description: "Foreign key to the location of the delivery person."
+        tests:
+          - not_null
+
+      - name: _loaded_at
+        description: "Load timestamp used as the incremental high-water mark."
+        tests:
+          - not_null
+
+  - name: STG_SESSIONS
+    description: "Staging table for website/app sessions (Airbyte CDC from MongoDB)."
+    columns:
+      - name: session_id
+        description: "Unique identifier for each session."
+        tests:
+          - unique
+          - not_null
+
+      - name: date
+        description: "Date of the session."
+        tests:
+          - not_null
+
+      - name: page_views
+        description: "Number of pages viewed in the session."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+
+      - name: session_duration_in_sec
+        description: "Session length in seconds."
+        tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
