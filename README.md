@@ -1,5 +1,21 @@
 # End-To-End E-commerce Analytics Platform Using Medallion Architecture
 
+An automated, tested ELT platform that brings 11 source tables from 3 source systems into Snowflake, models them with dbt (Bronze, Silver, Gold), and serves them to Power BI, SQL, and Jupyter.
+
+## Project at a Glance
+
+| | |
+|---|---|
+| **Sources** | 11 tables from 3 systems: AWS S3, PostgreSQL, MongoDB |
+| **Ingestion** | Snowpipe (S3), Python + Prefect (PostgreSQL), Airbyte (MongoDB), dbt Seeds (lookup tables) |
+| **Warehouse** | Snowflake, Medallion Architecture (Bronze, Silver, Gold) |
+| **dbt project** | 11 staging models, 8 intermediate models, 3 SCD Type 2 snapshots, 5 fact tables, 9 dimension tables, 21 macros |
+| **Data quality** | 254 dbt tests (213 generic, 41 singular) across staging, intermediate, and Gold |
+| **Orchestration** | Prefect (PostgreSQL ingestion) and Apache Airflow (scheduled dbt runs) |
+| **Consumption** | Power BI dashboard (8 pages), SQL analysis, Jupyter EDA |
+
+---
+
 ## Business Problem
 
 E-commerce businesses generate data across dozens of siloed systems: order management, customer CRM, marketing platforms, delivery operations, and session tracking. Without a unified data platform, teams run into problems like these:
@@ -10,7 +26,7 @@ E-commerce businesses generate data across dozens of siloed systems: order manag
 - **Wasted marketing spend.** You can't measure campaign ROI without linking spend to real conversions and revenue.
 - **Operational blind spots.** Delivery SLA breaches and fulfilment failures go unnoticed until they turn into bigger problems.
 
-I built this project to fix all of that. It is a centralised, automated, analytics ready data platform that brings 11 source tables from 3 different databases into a single Snowflake warehouse. Clean, governed, BI ready data is available within minutes of ingestion.
+This project fixes that with a centralised, automated, analytics ready data platform. Raw data reaches the Bronze layer within minutes through Snowpipe, and the Silver and Gold layers refresh on a daily dbt schedule.
 
 ---
 
@@ -19,13 +35,13 @@ I built this project to fix all of that. It is a centralised, automated, analyti
 | # | Goal | Outcome |
 |---|------|---------|
 | 1 | Bring all e-commerce data sources into one warehouse | Snowflake as the central platform |
-| 2 | Automate ingestion from S3, PostgreSQL, and MongoDB | Snowpipe, Python, and Airbyte |
+| 2 | Automate ingestion from S3, PostgreSQL, and MongoDB | Snowpipe, Python with Prefect, and Airbyte |
 | 3 | Improve data quality step by step with Medallion Architecture | Bronze, Silver, and Gold layers |
-| 4 | Build a governed, tested transformation layer | dbt models, tests, macros, and documentation |
+| 4 | Build a governed, tested transformation layer | dbt models, snapshots, macros, 254 tests, and documentation |
 | 5 | Produce analytics ready datasets in the Gold layer | Star schema fact and dimension tables |
-| 6 | Surface KPIs in a self serve BI dashboard | Power BI `ECOMMERCE.pbix` |
-| 7 | Enable ad hoc SQL analysis and EDA | SQL summaries and Jupyter notebooks |
-| 8 | Lay the groundwork for ML and predictive analytics | scikit-learn experiments |
+| 6 | Run the pipeline on a schedule | Airflow DAG for dbt, Prefect flow for PostgreSQL ingestion |
+| 7 | Surface KPIs in a self serve BI dashboard | Power BI `ECOMMERCE.pbix` |
+| 8 | Enable ad hoc SQL analysis and EDA | SQL summaries and Jupyter notebooks |
 
 ---
 
@@ -35,82 +51,85 @@ I built this project to fix all of that. It is a centralised, automated, analyti
 
 **How the data flows:**
 
-1. **Raw data lands** in AWS S3 (orders, marketing), PostgreSQL (customers, sellers, products, delivery), and MongoDB (sessions).
+1. **Raw data lands** in AWS S3 (orders, marketing), PostgreSQL (customers, sellers, products, delivery persons), and MongoDB (sessions).
 2. **Snowpipe** reacts to new S3 files automatically, loads them through a Snowflake External Stage, and runs `COPY INTO` to fill the Bronze tables.
-3. **Python scripts** extract the PostgreSQL tables (customers, sellers, products, delivery) and load them straight into the Bronze layer.
+3. **A Python script orchestrated by Prefect** extracts the PostgreSQL tables and loads them into the Bronze layer with a `_loaded_at` timestamp.
 4. **Airbyte** syncs MongoDB session documents into the Bronze layer on a schedule.
 5. **dbt Seeds** load the static lookup tables (location, channel, payment, fulfilment) into Bronze.
-6. **dbt Silver models** clean, standardise, cast, and deduplicate the data and apply business logic.
-7. **dbt Gold models** join data across domains, compute KPIs, and build the star schema.
-8. **Power BI** connects to the Gold layer for dashboards, while Jupyter notebooks and SQL queries use Gold for EDA and ad hoc analysis.
+6. **dbt staging and intermediate models** rename, cast, clean, deduplicate, and enrich the data. dbt snapshots track history for customers, sellers, and delivery persons (SCD Type 2).
+7. **dbt Gold models** build the star schema and calculate the KPIs.
+8. **Airflow** runs the dbt commands every day, in the right order, and runs all the tests.
+9. **Power BI** connects to the Gold layer for dashboards, while Jupyter notebooks and SQL queries use Gold for EDA and ad hoc analysis.
+
+---
 
 ## Tools & Technologies
 
 | Category | Tools / Technologies | Purpose |
 |---|---|---|
-| **Architecture Type** | Modern ELT, Medallion Architecture (Bronze, Silver, Gold), cloud data platform | Scalable, layered architecture for data processing and analytics |
-| **Data Sources** | AWS S3, PostgreSQL, MongoDB | Where the raw structured and unstructured data lives |
-| **Ingestion** | Snowpipe, Airbyte, Python | Automated data ingestion and pipeline execution |
-| **Staging Layer** | Snowflake External Stage | Landing zone for raw ingested data |
+| **Architecture** | Modern ELT, Medallion Architecture, cloud data platform | Scalable, layered processing |
+| **Data Sources** | AWS S3, PostgreSQL, MongoDB | Where the raw data lives |
+| **Ingestion** | Snowpipe, Airbyte, Python (pandas, psycopg2, snowflake-connector-python) | Automated ingestion into Bronze |
+| **Landing Zone** | Snowflake External Stage | Landing zone for files from S3 |
 | **Data Warehouse** | Snowflake | Centralised cloud data warehouse |
-| **Transformation** | dbt (Data Build Tool), SQL | Data transformation, modelling, and business logic |
-| **Data Layers** | Bronze Layer | Raw, append only data |
-| | Silver Layer | Cleaned, standardised, deduplicated data |
-| | Gold Layer | Aggregated, analytics ready data |
-| **Python Libraries** | pandas, NumPy, SQLAlchemy | Data manipulation, processing, and database connectivity |
-| | matplotlib, seaborn | Data visualisation and EDA |
-| | scikit-learn | Machine learning and predictive modelling |
-| | requests | API integration and data fetching |
-| **Data Modelling** | dbt Models, Seeds, Macros | Schema design and reusable transformations |
-| **Data Quality** | dbt Tests | Data validation and integrity checks |
-| **Orchestration Logic** | Python, SQL | Workflow logic and transformations |
-| **Analytics & BI** | Power BI | Dashboards and reporting |
-| **Ad Hoc Analysis** | SQL | Exploring the data with queries |
-| **EDA & ML** | Jupyter Notebook | Exploratory data analysis and ML workflows |
-| **Data Governance** | dbt Lineage, Documentation | Data lineage tracking and documentation |
+| **Transformation** | dbt Core (installed with pip), SQL, Jinja | Models, snapshots, macros, and business logic |
+| **Orchestration** | Prefect, Apache Airflow | Prefect runs the PostgreSQL ingestion flow, Airflow schedules the dbt commands |
+| **Data Quality** | dbt generic and singular tests | Validation and integrity checks |
+| **Data Governance** | dbt lineage and docs, Snowflake masking policies | Lineage tracking, documentation, and protection of sensitive columns |
+| **Analytics & BI** | Power BI, SQL | Dashboards and ad hoc analysis |
+| **EDA** | Jupyter Notebook, pandas, NumPy, matplotlib, seaborn | Exploratory data analysis |
+| **Environment** | uv, Docker (for local Airflow) | Dependency management and local runtime |
+
+---
 
 ## Raw Layer Data (Source Tables Overview)
 
 | Category | Table Name | Key Fields / Attributes | Description |
 |---|---|---|---|
-| **Customer Data** | RAW_CUSTOMERS | CUSTOMER_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, GENDER, DOB, LOCATION_ID | Customer demographic and personal information |
-| **Order Data** | RAW_ORDERS | ORDER_ID, CUSTOMER_ID, PRODUCT_ID, QUANTITY, ORDER_DATE, STATUS, PAYMENT_ID | Transactional order level data |
-| **Product Data** | RAW_PRODUCTS | PRODUCT_ID, PRODUCT_NAME, CATEGORY, SUB_CATEGORY, PRICE, BRAND | Product catalogue and pricing details |
+| **Customer Data** | RAW_CUSTOMERS | CUSTOMER_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, GENDER, DATE_OF_BIRTH, LOCATION_ID | Customer demographic and personal information |
+| **Order Data** | RAW_ORDER | ORDER_LINE_ID, ORDER_ID, CUSTOMER_ID, PRODUCT_ID, QUANTITY, ORDER_DATE, ORDER_STATUS, PAYMENT_ID | Transactional order line data |
+| **Product Data** | RAW_PRODUCTS | PRODUCT_ID, PRODUCT_NAME, CATEGORY, SUB_CATEGORY, LIST_PRICE, BRAND | Product catalogue and pricing details |
 | **Seller Data** | RAW_SELLERS | SELLER_ID, SELLER_NAME, EMAIL, PHONE_NUMBER, LOCATION_ID, RATING | Seller profiles and performance data |
-| **Session Data** | RAW_SESSIONS | SESSION_ID, CUSTOMER_ID, CHANNEL_ID, PAGE_VIEWS, PRODUCT_VIEWS, ADD_TO_CART, PURCHASES | User interaction and behaviour tracking |
-| **Marketing Data** | RAW_MARKETING | CAMPAIGN_ID, CHANNEL_ID, CLICKS, IMPRESSIONS, CONVERSIONS, REVENUE | Marketing campaign performance metrics |
+| **Session Data** | RAW_SESSIONS | SESSION_ID, CUSTOMER_ID, CHANNEL_ID, PAGE_VIEWS, PRODUCT_VIEWS, ADD_TO_CART_COUNT, PURCHASES | User interaction and behaviour tracking |
+| **Marketing Data** | RAW_MARKETING | MARKETING_ID, CAMPAIGN_ID, CHANNEL_ID, CLICKS, IMPRESSIONS, CONVERSIONS, REVENUE_GENERATED | Marketing campaign performance metrics |
 | **Payment Data** | RAW_PAYMENT | PAYMENT_ID, PAYMENT_METHOD, PAYMENT_PROVIDER | Payment methods and providers |
 | **Fulfilment Data** | RAW_FULFILLMENT | FULFILLMENT_ID, SHIPPING_METHOD, SERVICE_LEVEL, DELIVERY_SLA_DAYS, BASE_SHIPPING_COST | Shipping and fulfilment details |
-| **Delivery Data** | RAW_DELIVERY | DELIVERY_PERSON_ID, NAME, PHONE_NUMBER, VEHICLE_TYPE, LOCATION_ID | Delivery personnel information |
+| **Delivery Data** | RAW_DELIVERY_PERSONS | DELIVERY_PERSON_ID, DELIVERY_PERSON_NAME, PHONE_NUMBER, VEHICLE_TYPE, LOCATION_ID | Delivery personnel information |
 | **Location Data** | RAW_LOCATION | LOCATION_ID, CITY, STATE, REGION, LATITUDE, LONGITUDE | Geographical and regional mapping data |
 | **Channel Data** | RAW_CHANNEL | CHANNEL_ID, CHANNEL_NAME, CHANNEL_TYPE | Sales and marketing channel classification |
 
+---
+
+## Medallion Layers
+
 ### Bronze Layer: Raw Ingestion Zone
 
-The Bronze layer is the **system of record**. Data arrives exactly as it exists in the source, with no business logic, no filtering, and no transformation. Every ingested row is kept permanently, which gives full auditability and lets me replay transformations from scratch.
+The Bronze layer is the landing zone. Data arrives as it exists in the source, with no business logic, no filtering, and no renaming. The schema mirrors the source column for column.
 
-- Loaded through Snowpipe (S3), Python (PostgreSQL), Airbyte (MongoDB), and dbt Seeds (lookup tables)
-- The schema mirrors the source system column for column
-- Append only, so incremental loads never overwrite history
+| Source | Ingestion method | How Bronze is loaded |
+|---|---|---|
+| S3 (orders, marketing) | Snowpipe auto ingest with `COPY INTO` | Append only. New files add new rows. |
+| PostgreSQL (customers, sellers, products, delivery persons) | Python script orchestrated by Prefect | Full refresh. The table is truncated and reloaded, and every row gets a `_loaded_at` timestamp. |
+| MongoDB (sessions) | Airbyte | Scheduled sync |
+| Lookup tables (location, channel, payment, fulfilment) | dbt Seeds | Reloaded from CSV files in version control |
+
+History for customers, sellers, and delivery persons is not kept in Bronze, because that load is a full refresh. It is kept one layer up: the staging models for these tables append every load using `_loaded_at`, and dbt snapshots turn the changes into SCD Type 2 dimensions.
 
 ### Silver Layer: Cleansed and Conformed Zone
 
 This is where **data quality is enforced**. Raw data is cleaned, standardised, and made safe for analytics. The main steps are:
 
-- **Type casting:** converting strings to dates and decimals to proper numeric types
-- **Null handling:** coalescing, flagging, or dropping records with missing values, depending on the business rules
-- **Deduplication:** removing exact or near duplicate records with `ROW_NUMBER` window functions
-- **Standardisation:** normalising gender codes, phone formats, and email casing
-- **Business logic:** applying domain rules such as valid order statuses and active customer flags
-- **SCD Type 2:** tracking historical changes to customer and seller records with dbt snapshots
+- **Type casting:** strings to dates (`TRY_TO_DATE`), decimals to proper numeric types
+- **Standardisation:** `UPPER` and `TRIM` on text fields, gender code mapping, age buckets
+- **Deduplication:** one row per order line with `ROW_NUMBER` window functions
+- **Business logic:** gross amount, discount, tax, order value, refund amount, delivery delay, return flag, and sentiment category, all defined once as macros
+- **SCD Type 2:** tracking historical changes to customer, seller, and delivery person records with dbt snapshots
 
 ### Gold Layer: Analytics Ready Zone
 
-The Gold layer is the **business intelligence layer**. Data is aggregated in advance, joined, and optimised for query performance. Power BI, SQL analysts, and data scientists all read from this layer.
+The Gold layer is the **business intelligence layer**. Data is modelled as a star schema, so Power BI, SQL analysts, and data scientists all read from the same clean fact and dimension tables.
 
 ### Fact Tables
-
-These fact tables capture the key business processes and measurable events:
 
 | Fact Table | Purpose |
 |---|---|
@@ -122,105 +141,96 @@ These fact tables capture the key business processes and measurable events:
 
 ### Dimension Tables
 
-Dimension tables hold the descriptive attributes used for slicing, filtering, and aggregating business insights.
-
 | Dimension Table | Purpose |
 |---|---|
-| `DIM_CUSTOMER` | Customer demographic and profile information |
+| `DIM_CUSTOMER` | Customer demographic and profile information (current version) |
 | `DIM_PRODUCT` | Product catalogue, pricing, and category details |
-| `DIM_SELLER` | Seller profile and performance attributes |
+| `DIM_SELLER` | Seller profile and performance attributes (current version) |
 | `DIM_LOCATION` | Geographic and regional mapping information |
 | `DIM_CHANNEL` | Sales and marketing channel classification |
 | `DIM_CAMPAIGN` | Marketing campaign metadata and tracking |
 | `DIM_PAYMENT` | Payment methods and providers |
 | `DIM_FULFILLMENT` | Shipping methods, SLA, and fulfilment information |
-| `DIM_DELIVERY_PERSON` | Delivery personnel information and logistics tracking |
+| `DIM_DELIVERY_PERSON` | Delivery personnel information (current version) |
 
-The schema supports these analytical areas:
-
-* **Sales Analytics**
-* **Marketing Performance**
-* **Customer Behaviour Analytics**
-* **Delivery and Logistics Monitoring**
-* **Customer Feedback and Sentiment Analysis**
+The schema supports these analytical areas: sales analytics, marketing performance, customer behaviour, delivery and logistics monitoring, and customer feedback and sentiment.
 
 ### Entity Relationship Diagram
 
 ![Entity Relationship Diagram](Fig/ER_MODEL.png)
 
-## dbt Workflow
+---
 
-dbt is the **transformation engine** of this platform. All business logic lives in version controlled SQL, with no stored procedures and no black boxes.
-
-### dbt Project Components
-
-#### Models
-
-dbt models are `.sql` files organised across three layers (Staging, Intermediate, and Mart) that map directly onto the Medallion Architecture:
+## Repository Structure
 
 ```
-ecommerce_dbt/models/
-│
-├── source/
-│   └── source.yml                    -- dbt source definitions and freshness checks
-│
-├── staging/                          -- Bronze: mirrors the sources 1:1, type casting only
-│   ├── STG_CHANNEL.sql
-│   ├── STG_CUSTOMERS.sql
-│   ├── STG_DELIVERY_PERSONS.sql
-│   ├── STG_FULLFILLMENT.sql
-│   ├── STG_LOCATION.sql
-│   ├── STG_MARKETING.sql
-│   ├── STG_ORDERS.sql
-│   ├── STG_PAYMENT.sql
-│   ├── STG_PRODUCTS.sql
-│   ├── STG_SELLERS.sql
-│   └── STG_SESSIONS.sql
-│
-├── intermediate/                     -- Silver: cleaned, deduplicated, enriched
-│   ├── ENRICHED_ORDER.sql            -- Orders enriched with product, payment, and location
-│   ├── ENRICHED_ORDER.yml
-│   ├── INT_CHANNEL.sql
-│   ├── INT_CHANNEL.yml
-│   ├── INT_FULLFILLMENT.sql
-│   ├── INT_FULLFILLMENT.yml
-│   ├── INT_LOCATION.sql
-│   ├── INT_LOCATION.yml
-│   ├── INT_MARKETING_EVENT.sql
-│   ├── INT_MARKETING_EVENT.yml
-│   ├── INT_PAYMENT.sql
-│   ├── INT_PAYMENT.yml
-│   ├── INT_PRODUCT.sql
-│   ├── INT_PRODUCT.yml
-│   ├── INT_SESSION.sql
-│   └── INT_SESSION.yml
-│
-└── mart/                             -- Gold: star schema, BI ready
-    ├── Dim/                          -- Conformed dimension tables
-    │   ├── DIM_CAMPAIGN.sql
-    │   ├── DIM_CHANNEL.sql
-    │   ├── DIM_CUSTOMER.sql
-    │   ├── DIM_DELIVERY_PERSON.sql
-    │   ├── DIM_FULFILLMENT.sql
-    │   ├── DIM_LOCATION.sql
-    │   ├── DIM_PAYMENT.sql
-    │   ├── DIM_PRODUCT.sql
-    │   ├── DIM_SELLER.sql
-    │   └── DIM.yml
-    └── Fact/                         -- Business fact tables
-        ├── FACT_DELIVERY.sql
-        ├── FACT_DELIVERY.yml
-        ├── FACT_FEEDBACK.sql
-        ├── FACT_FEEDBACK.yml
-        ├── FACT_MARKETING.sql
-        ├── FACT_MARKETING.yml
-        ├── FACT_SALES.sql
-        ├── FACT_SALES.yml
-        ├── FACT_SESSION.sql
-        └── FACT_SESSION.yml
+.
+├── Airflow/                         # Airflow DAG that schedules the dbt commands, plus setup guide
+├── ecomerce_dbt/                    # dbt project (models, seeds, snapshots, macros, tests)
+├── Snowflake/                       # Snowflake setup SQL
+├── Masking Policy in Snowflake/     # Snowflake masking policies for sensitive columns
+├── Order Summery/                   # Ad hoc SQL: orders
+├── Marketing Summery/               # Ad hoc SQL: marketing
+├── Session Summery/                 # Ad hoc SQL: sessions
+├── Delivery Summery/                # Ad hoc SQL: delivery
+├── Feedback Summery/                # Ad hoc SQL: feedback
+├── EDA/                             # Jupyter notebooks
+├── Fig/                             # Diagrams and screenshots
+├── ECOMMERCE.pbix                   # Power BI report
+├── pyproject.toml, uv.lock          # Python dependencies (uv)
+└── README.md
 ```
 
-#### Seeds
+---
+
+## dbt Project
+
+dbt is the **transformation engine** of this platform. All business logic lives in version controlled SQL.
+
+### Project Components
+
+```
+ecomerce_dbt/
+├── models/
+│   ├── source/
+│   │   └── source.yml                -- source definitions and freshness checks
+│   │
+│   ├── staging/                      -- 1:1 with Bronze: renaming, type casting, incremental loading
+│   │   ├── STG_CHANNEL.sql
+│   │   ├── STG_CUSTOMERS.sql
+│   │   ├── STG_DELIVERY_PERSONS.sql
+│   │   ├── STG_FULLFILLMENT.sql
+│   │   ├── STG_LOCATION.sql
+│   │   ├── STG_MARKETING.sql
+│   │   ├── STG_ORDERS.sql
+│   │   ├── STG_PAYMENT.sql
+│   │   ├── STG_PRODUCTS.sql
+│   │   ├── STG_SELLERS.sql
+│   │   ├── STG_SESSIONS.sql
+│   │   └── STG.yml
+│   │
+│   ├── intermediate/                 -- Silver: cleaned, deduplicated, enriched
+│   │   ├── ENRICHED_ORDER.sql        -- deduplicated order lines with financial metrics, delay, and return flag
+│   │   ├── INT_CHANNEL.sql
+│   │   ├── INT_FULLFILLMENT.sql
+│   │   ├── INT_LOCATION.sql
+│   │   ├── INT_MARKETING_EVENT.sql
+│   │   ├── INT_PAYMENT.sql
+│   │   ├── INT_PRODUCT.sql
+│   │   ├── INT_SESSION.sql
+│   │   └── one .yml file per model
+│   │
+│   └── mart/                         -- Gold: star schema, BI ready
+│       ├── Dim/                      -- 9 dimension tables + DIM.yml
+│       └── Fact/                     -- 5 fact tables + one .yml file per fact
+│
+├── seeds/                            -- static lookup CSV files
+├── snapshots/                        -- SCD Type 2 snapshots (customers, sellers, delivery persons)
+├── macros/                           -- reusable Jinja SQL
+└── tests/                            -- singular tests (staging, intermediate, dimensions, facts)
+```
+
+### Seeds
 
 Seeds load **static lookup tables** from CSV files in version control straight into the Bronze layer, so no ingestion pipeline is needed:
 
@@ -231,22 +241,18 @@ Seeds load **static lookup tables** from CSV files in version control straight i
 | `RAW_PAYMENT.csv` | `RAW_PAYMENT` | Payment methods and provider names |
 | `RAW_FULFILLMENT.csv` | `RAW_FULFILLMENT` | Shipping methods, SLA days, and base costs |
 
-```bash
-dbt seed  # Loads all 4 seed CSVs into the Snowflake Bronze layer
-```
+### Macros
 
-#### Macros
-
-The project has **22 reusable Jinja SQL macros** that remove repetition across models and keep business logic consistent. Every marketing metric, financial calculation, and classification rule is defined once here and reused across the Intermediate and Mart layers:
+The project has **21 reusable Jinja SQL macros**. Every marketing metric, financial calculation, and classification rule is defined once and reused across the Intermediate and Gold layers:
 
 | Macro | Purpose |
 |---|---|
-| `calculate_gross_amount` | Gross revenue: `quantity × price` |
+| `calculate_gross_amount` | Gross revenue: `quantity x unit price` |
 | `calculate_net_amount` | Net revenue after discounts and refunds |
 | `calculate_discount_amount` | Discount value applied to an order |
 | `calculate_refund_amount` | Refund amount calculation |
-| `calculate_tax_amount` | Tax calculation on order value |
-| `calculate_order_value` | Final order level value |
+| `calculate_tax_amount` | Tax calculation after discount |
+| `calculate_order_value` | Final order line value including tax and shipping |
 | `calculate_ctr` | Click through rate: `clicks / impressions` |
 | `calculate_cvr` | Conversion rate: `conversions / clicks` |
 | `calculate_cpa` | Cost per acquisition |
@@ -254,104 +260,115 @@ The project has **22 reusable Jinja SQL macros** that remove repetition across m
 | `calculate_cpm` | Cost per mille (1,000 impressions) |
 | `calculate_roas` | Return on ad spend: `revenue / spend` |
 | `calculate_rpc` | Revenue per click |
-| `calculate_delay` | Delivery delay in days against the SLA |
+| `calculate_delay` | Delivery delay in days: actual against expected delivery date |
 | `calculate_age` | Customer age from date of birth |
-| `age_category` | Age bucket classification (18–25, 26–35, …) |
-| `gender_map` | Gender code standardisation (M/F → Male/Female) |
-| `delivery_delay_category` | SLA breach severity classification |
-| `return_flag` | Boolean flag for returned orders |
+| `age_category` | Age bucket classification |
+| `gender_map` | Gender code standardisation |
+| `delivery_delay_category` | Delay severity classification |
+| `return_flag` | Flag for returned orders |
 | `sentiment_category` | Feedback sentiment classification (Positive / Neutral / Negative) |
 | `generate_schema_name` | Dynamic Snowflake schema resolution for each environment |
 
-#### Tests
+### Snapshots (SCD Type 2)
 
-dbt tests enforce data quality contracts at every layer, using the real model names in this project.
+dbt snapshots keep the full history of changes for customers, sellers, and delivery persons. The Gold dimensions `DIM_CUSTOMER`, `DIM_SELLER`, and `DIM_DELIVERY_PERSON` read the current version of each record (`dbt_valid_to IS NULL`).
 
-**Test categories used:**
+### Tests
 
-- `unique`: no duplicate primary keys across all Fact and Dimension tables
-- `not_null`: required fields are populated in every Staging and Intermediate model
-- `accepted_values`: status and category fields are checked against the expected values
-- `relationships`: foreign keys resolve to valid parent records across models
-- Custom tests: revenue stays positive, dates fall in a valid range, and delays are never negative
+Data quality is tested at every layer. The tests are part of the project and run on every scheduled run.
 
-#### Lineage & Documentation
+| Layer | Generic tests | Singular tests | Total |
+|---|---|---|---|
+| Staging | 52 | 7 | 59 |
+| Intermediate | 85 | 12 | 97 |
+| Gold: dimensions | 28 | 6 | 34 |
+| Gold: facts | 48 | 16 | 64 |
+| **Total** | **213** | **41** | **254** |
 
-dbt generates a full **column level lineage graph** and a searchable documentation site:
+**Generic tests:**
+
+- `unique` and `not_null` on every primary key, and on the `_loaded_at` column that drives incremental loads
+- `relationships`: foreign keys resolve to valid parent records, from facts to dimensions and from intermediate models to each other
+- `accepted_values`: statuses, payment methods, channels, and categories match the expected values
+- `dbt_utils.accepted_range`: ratings from 0 to 5, sentiment from -1 to 1, prices above 0, and valid coordinates
+- `dbt_utils.unique_combination_of_columns`: `(id, _loaded_at)` is unique in the staging tables that keep history
+
+**Singular tests** check business rules that a single column cannot express:
+
+- **Reconciliation:** gross amount equals quantity times price, order value equals gross minus discount plus tax plus shipping, and ROAS and CPC match the raw measures
+- **Cross-table consistency:** every order line in `FACT_SALES` also exists in `FACT_DELIVERY` and `FACT_FEEDBACK`, with the same order date
+- **Pipeline health:** intermediate models stay in sync with staging, and no `_loaded_at` value lies in the future
+- **Domain rules:** delivery dates are not before the order date, ratings are in range, IFSC and PIN code formats are valid, and payment methods match their providers
+
+Tests that depend on business assumptions use `severity: warn`. They show a warning but do not stop the pipeline. All other tests fail the run.
 
 ```bash
-dbt docs generate   # Build documentation
-dbt docs serve      # Launch docs site on localhost:8080
+dbt test --store-failures   # runs every test and saves the failing rows in Snowflake
 ```
 
-Every model, column, test, and source is documented inline through `schema.yml` descriptions, so the data catalogue builds itself with no extra tooling.
+### Lineage & Documentation
+
+dbt generates a column level lineage graph and a searchable documentation site:
+
+```bash
+dbt docs generate
+dbt docs serve --port 8081   # port 8081 because Airflow uses 8080
+```
+
+Every model, column, test, and source is documented through the `.yml` files.
 
 ![DBT Lineage](Fig/DBT_Lineage.png)
 
-#### Core dbt Commands
+---
 
-```bash
-# Parse and validate project
-dbt parse
+## Orchestration
 
-# Run all transformations
-dbt run
+**Prefect** runs the PostgreSQL ingestion. The flow loops over the four PostgreSQL tables, with 2 retries and a 30 second wait for each table. For every table it reads the data with pandas, adds `_loaded_at`, truncates the Snowflake table, and loads the rows with `write_pandas`.
 
-# Run specific model
-dbt run -s stg_customers
+**Airflow** schedules the dbt commands in the `ecommerce_dbt_pipeline` DAG, which runs daily:
 
-# Run model and its dependents
-dbt run -s +stg_customers+
-
-# Full refresh (rebuild from scratch)
-dbt run --full-refresh
-
-# Run only tests
-dbt test
-
-# Run tests for specific model
-dbt test -s stg_customers
-
-# Generate documentation
-dbt docs generate
-
-# Serve documentation locally
-dbt docs serve
-
-# Check lineage and dependencies
-dbt dag
-
-# Run in production (with proper error handling)
-dbt run --target prod --profiles-dir ~/.dbt
-
-# Debug command (test connections, execute SQL)
-dbt debug
+```
+dbt deps -> dbt seed -> dbt run --select 'STG_*' -> dbt snapshot -> dbt run --exclude 'STG_*' -> dbt test --store-failures
 ```
 
-#### Data Quality Testing
+Staging runs first and the snapshot second, so the Silver and Gold layers never lag one run behind the SCD Type 2 snapshots.
+
+Snowpipe and Airbyte run on their own triggers and are not part of the Airflow DAG. See `Airflow/SETUP.md` for running Airflow locally with the Astro CLI.
+
+## How to Run
 
 ```bash
-# Run all tests
-dbt test
+uv sync                                  # install Python dependencies
+# create a .env file with your PostgreSQL and Snowflake credentials
 
-# Run with detailed output
-dbt test --verbose
-
-# Generate test report
+cd ecomerce_dbt
+dbt deps
+dbt seed
+dbt run --select 'STG_*'
+dbt snapshot
+dbt run --exclude 'STG_*'
 dbt test --store-failures
 ```
 
 ---
 
+## Data Governance & Security
+
+- **Masking policies:** Snowflake masking policies (see `Masking Policy in Snowflake/`) protect sensitive columns such as card numbers, UPI IDs, and bank account numbers.
+- **No secrets in the repository:** credentials are read from environment variables.
+- **Documentation and lineage:** generated by dbt from the model files.
+
+---
+
 ## KPI Metrics
 
-The Gold layer surfaces the following business KPIs, which Power BI and SQL analysts use directly:
+The Gold layer supports the following business KPIs, which Power BI and SQL analysts use directly:
 
 ### Revenue & Orders
 
 | KPI | Definition |
 |---|---|
-| **Gross Revenue** | SUM(quantity × price) across all delivered orders |
+| **Gross Revenue** | SUM(quantity x unit price) |
 | **Average Order Value (AOV)** | Gross Revenue / Total Orders |
 | **Monthly Revenue Growth** | Month over month revenue change (%) |
 | **Revenue by Category** | Revenue grouped by product category |
@@ -381,8 +398,8 @@ The Gold layer surfaces the following business KPIs, which Power BI and SQL anal
 
 | KPI | Definition |
 |---|---|
-| **Add-to-Cart Rate** | ADD_TO_CART / PRODUCT_VIEWS |
-| **Purchase Conversion Rate** | PURCHASES / ADD_TO_CART |
+| **Add-to-Cart Rate** | ADD_TO_CART_COUNT / PRODUCT_VIEWS |
+| **Checkout Conversion Rate** | PURCHASES / CHECKOUT_ATTEMPTS |
 | **Page Views per Session** | AVG(PAGE_VIEWS) |
 | **Sessions by Channel** | Session count grouped by channel |
 
@@ -399,14 +416,14 @@ The Gold layer surfaces the following business KPIs, which Power BI and SQL anal
 
 ## SQL Analysis
 
-The `*Summary/` folders hold the SQL scripts written for ad hoc business questions:
+The `* Summery/` folders hold the SQL scripts written for ad hoc business questions:
 
 ```
-Order Summary/          → Revenue by period, order status breakdown, top products
-Marketing Summary/      → Campaign ROI, channel attribution, ROAS by campaign
-Session Summary/        → Funnel conversion rates, channel session quality
-Delivery Summary/       → SLA compliance, delay analysis, delivery person ranking
-Feedback Summary/       → Sentiment scoring, rating distribution, seller feedback
+Order Summery/          -> Revenue by period, order status breakdown, top products
+Marketing Summery/      -> Campaign ROI, channel attribution, ROAS by campaign
+Session Summery/        -> Funnel conversion rates, channel session quality
+Delivery Summery/       -> SLA compliance, delay analysis, delivery person ranking
+Feedback Summery/       -> Sentiment scoring, rating distribution, seller feedback
 ```
 
 ---
@@ -428,11 +445,9 @@ The `ECOMMERCE.pbix` file connects to the Snowflake Gold layer and gives an exec
 
 ---
 
-## EDA & Machine Learning
+## Exploratory Data Analysis
 
-The `EDA/` folder holds Jupyter notebooks that cover the full analytical range.
-
-### Exploratory Data Analysis
+The `EDA/` folder holds Jupyter notebooks that explore the Gold layer:
 
 ```
 EDA/
@@ -440,20 +455,38 @@ EDA/
 ├── 02_delivery_eda.ipynb     # SLA compliance, delivery time distribution
 ├── 03_feedback_eda.ipynb     # Customer ratings, sentiment analysis, review trends
 ├── 04_session_eda.ipynb      # Funnel visualisation, channel performance, drop off rates
-├── 05_marketing_eda.ipynb    # CTR, ROAS, campaign ROI analysis
+└── 05_marketing_eda.ipynb    # CTR, ROAS, campaign ROI analysis
 ```
+
+---
+
+## Key Design Decisions
+
+- **One ingestion tool per source type.** Snowpipe suits files that land in S3 and need event driven loading. A Python script gives full control over the PostgreSQL tables. Airbyte handles the MongoDB connector and its schema.
+- **Static lookup data as dbt seeds.** Location, channel, payment, and fulfilment data change rarely, so CSV files in version control are simpler than a pipeline.
+- **History is kept in staging for changing records.** The PostgreSQL load is a full refresh, so the staging models for customers, sellers, and delivery persons append every load. Snapshots then track the changes as SCD Type 2.
+- **Incremental models for large tables.** Orders, marketing, and sessions only process new rows on each run.
+- **Business logic lives in macros.** Each metric is defined once, so the same formula is used in every model.
+- **Tests at every layer.** Problems are caught in staging before they reach Gold, and tests that rely on assumptions warn instead of stopping the pipeline.
+- **Split orchestration.** Prefect handles the Python ingestion flow with retries. Airflow only schedules the dbt commands, so each tool has one clear job.
+
+## Future Improvements
+
+- Use `_loaded_at` in the incremental filters of the intermediate models so late arriving and updated records are always picked up
+- Run `dbt build` in GitHub Actions on every pull request
+- Use Astronomer Cosmos so each dbt model shows as its own task in Airflow
+- Build churn, CLV, and delivery delay models with scikit-learn on top of Gold features
+
+---
 
 ## Learning Outcomes
 
-Building this platform gave me practical experience across the modern data stack:
-
-- **Medallion Architecture:** knowing when and how to apply each layer's transformation approach in production
-- **Snowflake internals:** External Stages, Snowpipe auto ingest, storage integrations, warehouse sizing, clustering, and result caching
-- **dbt in depth:** models, seeds, macros, tests, snapshots, incremental materialisation, lineage, and documentation generation
-- **ELT design across several sources:** combining event based triggers (Snowpipe), connectors (Airbyte), and custom code (Python) into one coherent ingestion design
-- **Star schema modelling:** designing fact and dimension tables that balance query performance with analytical flexibility
+- **Medallion Architecture:** knowing what each layer is for and where each kind of transformation belongs
+- **Snowflake:** External Stages, Snowpipe auto ingest, masking policies, and clustering
+- **dbt in depth:** models, seeds, macros, snapshots, incremental materialisation, tests, lineage, and documentation
+- **ELT across several sources:** combining event based loading (Snowpipe), connectors (Airbyte), and custom code (Python with Prefect) in one design
+- **Star schema modelling:** designing fact and dimension tables for query performance and flexibility
 - **SCD Type 2:** preserving dimensional history with dbt snapshots
-- **Data quality as code:** building tests into the transformation layer instead of adding them as an afterthought
+- **Data quality as code:** 254 tests across every layer, including reconciliation checks between tables
+- **Orchestration:** Prefect flows with retries and an Airflow DAG with ordered dbt tasks
 - **Analytics engineering mindset:** bridging data engineering (pipelines) and data analysis (business logic in SQL)
-- **Python for data engineering:** using pandas, SQLAlchemy, and requests for custom connectors and EDA
-- **ML experimentation:** applying scikit-learn to business problems (churn, CLV, delay prediction) with features built in the warehouse
